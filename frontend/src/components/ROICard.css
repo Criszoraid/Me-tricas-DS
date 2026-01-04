@@ -1,0 +1,155 @@
+.roi-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.roi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.roi-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
+}
+
+.roi-period {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.roi-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.roi-value-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.roi-value {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.roi-status {
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.roi-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.roi-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.roi-detail-label {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.roi-detail-value {
+  font-weight: 600;
+  color: #212529;
+}
+
+.roi-notes {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  color: #495057;
+  font-size: 0.875rem;
+}
+
+.roi-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.roi-breakdown-section h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 1rem;
+}
+
+.roi-breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.roi-breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.roi-breakdown-item span:first-child {
+  color: #495057;
+}
+
+.roi-breakdown-item span:last-child {
+  font-weight: 600;
+  color: #212529;
+}
+
+@media (max-width: 1024px) {
+  .roi-main {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .roi-breakdown {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .roi-card {
+    padding: 1.5rem;
+  }
+
+  .roi-value {
+    font-size: 3rem;
+  }
+
+  .roi-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+

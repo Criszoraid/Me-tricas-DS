@@ -1,0 +1,30 @@
+{
+  "description": "Template para agregar métricas manualmente",
+  "designMetrics": {
+    "type": "design",
+    "data": {
+      "totalComponents": 0,
+      "usedComponents": 0,
+      "detachedComponents": 0,
+      "adoptionPercentage": 0,
+      "isManual": true
+    }
+  },
+  "developmentMetrics": {
+    "type": "development",
+    "data": {
+      "dsPackageInstalls": 0,
+      "reposUsingDS": 0,
+      "customComponentsCount": 0,
+      "componentsBuiltFromScratch": 0,
+      "uiRelatedIssues": 0,
+      "resolvedIssues": 0,
+      "isManual": true
+    }
+  },
+  "usage": {
+    "design": "POST /api/metrics/manual con designMetrics",
+    "development": "POST /api/metrics/manual con developmentMetrics"
+  }
+}
+

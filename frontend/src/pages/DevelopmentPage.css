@@ -1,0 +1,314 @@
+.dev-page-content {
+  max-width: 1400px;
+}
+
+.page-header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.data-source-toggle {
+  display: flex;
+  gap: 0.5rem;
+  background: #f0f0f3;
+  border-radius: 15px;
+  padding: 0.25rem;
+  box-shadow: 
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+  border: none;
+}
+
+.toggle-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-button:hover {
+  color: #212529;
+}
+
+.toggle-button.active {
+  background: #f0f0f3;
+  color: #0d6efd;
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+.dev-metrics-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dev-metric-card {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.6),
+    -8px -8px 16px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.dev-metric-card:hover {
+  box-shadow: 
+    10px 10px 20px rgba(163, 177, 198, 0.7),
+    -10px -10px 20px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.dev-metric-header {
+  margin-bottom: 1rem;
+}
+
+.dev-metric-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6c757d;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dev-metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #212529;
+  margin: 0 0 0.5rem 0;
+  line-height: 1;
+}
+
+.dev-metric-source {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.dev-chart-section {
+  margin-bottom: 2rem;
+}
+
+.dev-chart-container {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+  border: none;
+  transition: all 0.3s;
+}
+
+.dev-chart-container:hover {
+  box-shadow: 
+    12px 12px 20px rgba(163, 177, 198, 0.7),
+    -12px -12px 20px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.chart-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 0.25rem 0;
+}
+
+.chart-subtitle {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.chart-info-icon {
+  font-size: 1rem;
+  color: #adb5bd;
+  cursor: help;
+}
+
+.chart-wrapper {
+  height: 300px;
+  position: relative;
+}
+
+.dev-details-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.dev-repository-section,
+.dev-activity-section {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.dev-repository-section:hover,
+.dev-activity-section:hover {
+  box-shadow: 
+    12px 12px 20px rgba(163, 177, 198, 0.7),
+    -12px -12px 20px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.dev-section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 1.5rem 0;
+}
+
+.repository-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.repository-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.repository-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.repository-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #212529;
+}
+
+.repository-usage {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.repository-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.repository-bar {
+  height: 100%;
+  background-color: #0d6efd;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.repository-commits {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.activity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.activity-action {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #212529;
+}
+
+.activity-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.activity-repo {
+  font-weight: 500;
+}
+
+.info-button-small {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-button-small:hover {
+  color: #212529;
+}
+
+@media (max-width: 1200px) {
+  .dev-metrics-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dev-details-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header-main {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dev-metrics-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .dev-metric-value {
+    font-size: 1.75rem;
+  }
+}
+

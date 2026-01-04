@@ -1,0 +1,46 @@
+[
+  {
+    "period": "2024-Q1",
+    "roi": 180,
+    "component_cost": 1500,
+    "time_to_market_weeks": 5.2,
+    "dev_productivity_gain": 28,
+    "designer_productivity_gain": 32,
+    "latest_version_adoption": 62,
+    "total_teams": 12,
+    "products_using_ds": 6
+  },
+  {
+    "period": "2024-Q2",
+    "roi": 210,
+    "component_cost": 1300,
+    "time_to_market_weeks": 4.5,
+    "dev_productivity_gain": 32,
+    "designer_productivity_gain": 38,
+    "latest_version_adoption": 68,
+    "total_teams": 12,
+    "products_using_ds": 8
+  },
+  {
+    "period": "2024-Q3",
+    "roi": 235,
+    "component_cost": 1150,
+    "time_to_market_weeks": 4.0,
+    "dev_productivity_gain": 35,
+    "designer_productivity_gain": 42,
+    "latest_version_adoption": 75,
+    "total_teams": 14,
+    "products_using_ds": 10
+  },
+  {
+    "period": "2024-Q4",
+    "roi": 245,
+    "component_cost": 1050,
+    "time_to_market_weeks": 3.8,
+    "dev_productivity_gain": 38,
+    "designer_productivity_gain": 45,
+    "latest_version_adoption": 78,
+    "total_teams": 15,
+    "products_using_ds": 12
+  }
+]

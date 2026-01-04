@@ -1,0 +1,168 @@
+{
+  "designMetrics": [
+    {
+      "id": "figma-sample-5",
+      "timestamp": 1754247882117,
+      "source": "figma",
+      "totalComponents": 45,
+      "usedComponents": 31,
+      "detachedComponents": 5,
+      "adoptionPercentage": 68.6,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-4",
+      "timestamp": 1756926282120,
+      "source": "figma",
+      "totalComponents": 46,
+      "usedComponents": 33,
+      "detachedComponents": 5,
+      "adoptionPercentage": 72.2,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-3",
+      "timestamp": 1759518282120,
+      "source": "figma",
+      "totalComponents": 47,
+      "usedComponents": 36,
+      "detachedComponents": 4,
+      "adoptionPercentage": 73.8,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-2",
+      "timestamp": 1762200282120,
+      "source": "figma",
+      "totalComponents": 48,
+      "usedComponents": 39,
+      "detachedComponents": 3,
+      "adoptionPercentage": 79.2,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-1",
+      "timestamp": 1764792282120,
+      "source": "figma",
+      "totalComponents": 45,
+      "usedComponents": 43,
+      "detachedComponents": 3,
+      "adoptionPercentage": 84.1,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-0",
+      "timestamp": 1767470682120,
+      "source": "figma",
+      "totalComponents": 46,
+      "usedComponents": 45,
+      "detachedComponents": 3,
+      "adoptionPercentage": 87.2,
+      "figmaFileKey": "sample-file-key"
+    }
+  ],
+  "developmentMetrics": [
+    {
+      "id": "github-sample-5",
+      "timestamp": 1754247882120,
+      "source": "github",
+      "dsPackageInstalls": 15,
+      "reposUsingDS": 13,
+      "customComponentsCount": 25,
+      "componentsBuiltFromScratch": 20,
+      "uiRelatedIssues": 8,
+      "resolvedIssues": 6,
+      "organization": "sample-org",
+      "repos": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    },
+    {
+      "id": "github-sample-4",
+      "timestamp": 1756926282120,
+      "source": "github",
+      "dsPackageInstalls": 19,
+      "reposUsingDS": 15,
+      "customComponentsCount": 24,
+      "componentsBuiltFromScratch": 20,
+      "uiRelatedIssues": 7,
+      "resolvedIssues": 6,
+      "organization": "sample-org",
+      "repos": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    },
+    {
+      "id": "github-sample-3",
+      "timestamp": 1759518282120,
+      "source": "github",
+      "dsPackageInstalls": 20,
+      "reposUsingDS": 16,
+      "customComponentsCount": 25,
+      "componentsBuiltFromScratch": 18,
+      "uiRelatedIssues": 7,
+      "resolvedIssues": 5,
+      "organization": "sample-org",
+      "repos": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    },
+    {
+      "id": "github-sample-2",
+      "timestamp": 1762200282120,
+      "source": "github",
+      "dsPackageInstalls": 22,
+      "reposUsingDS": 17,
+      "customComponentsCount": 24,
+      "componentsBuiltFromScratch": 17,
+      "uiRelatedIssues": 8,
+      "resolvedIssues": 5,
+      "organization": "sample-org",
+      "repos": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    },
+    {
+      "id": "github-sample-1",
+      "timestamp": 1764792282120,
+      "source": "github",
+      "dsPackageInstalls": 24,
+      "reposUsingDS": 18,
+      "customComponentsCount": 21,
+      "componentsBuiltFromScratch": 17,
+      "uiRelatedIssues": 6,
+      "resolvedIssues": 5,
+      "organization": "sample-org",
+      "repos": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    },
+    {
+      "id": "github-sample-0",
+      "timestamp": 1767470682120,
+      "source": "github",
+      "dsPackageInstalls": 25,
+      "reposUsingDS": 21,
+      "customComponentsCount": 20,
+      "componentsBuiltFromScratch": 15,
+      "uiRelatedIssues": 6,
+      "resolvedIssues": 5,
+      "organization": "sample-org",
+      "repos": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    }
+  ]
+}

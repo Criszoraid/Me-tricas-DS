@@ -1,0 +1,118 @@
+{
+  "description": "Dataset completo de ejemplo con múltiples métricas históricas",
+  "designMetrics": [
+    {
+      "id": "figma-sample-1",
+      "timestamp": 1704067200000,
+      "source": "figma",
+      "totalComponents": 42,
+      "usedComponents": 28,
+      "detachedComponents": 5,
+      "adoptionPercentage": 66.7,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-2",
+      "timestamp": 1706745600000,
+      "source": "figma",
+      "totalComponents": 44,
+      "usedComponents": 32,
+      "detachedComponents": 4,
+      "adoptionPercentage": 72.7,
+      "figmaFileKey": "sample-file-key"
+    },
+    {
+      "id": "figma-sample-3",
+      "timestamp": 1709251200000,
+      "source": "figma",
+      "totalComponents": 45,
+      "usedComponents": 36,
+      "detachedComponents": 3,
+      "adoptionPercentage": 80.0,
+      "figmaFileKey": "sample-file-key"
+    }
+  ],
+  "developmentMetrics": [
+    {
+      "id": "github-sample-1",
+      "timestamp": 1704067200000,
+      "source": "github",
+      "dsPackageInstalls": 15,
+      "reposUsingDS": 12,
+      "customComponentsCount": 25,
+      "componentsBuiltFromScratch": 20,
+      "uiRelatedIssues": 8,
+      "resolvedIssues": 6,
+      "organization": "sample-org"
+    },
+    {
+      "id": "github-sample-2",
+      "timestamp": 1706745600000,
+      "source": "github",
+      "dsPackageInstalls": 18,
+      "reposUsingDS": 15,
+      "customComponentsCount": 18,
+      "componentsBuiltFromScratch": 14,
+      "uiRelatedIssues": 6,
+      "resolvedIssues": 5,
+      "organization": "sample-org"
+    },
+    {
+      "id": "github-sample-3",
+      "timestamp": 1709251200000,
+      "source": "github",
+      "dsPackageInstalls": 22,
+      "reposUsingDS": 18,
+      "customComponentsCount": 12,
+      "componentsBuiltFromScratch": 8,
+      "uiRelatedIssues": 5,
+      "resolvedIssues": 4,
+      "organization": "sample-org"
+    }
+  ],
+  "roi": {
+    "costs": {
+      "teamSize": 3,
+      "averageSalary": 80000,
+      "timeMonths": 12,
+      "maintenanceHoursPerMonth": 40,
+      "maintenanceRate": 75,
+      "toolsCost": 5000,
+      "infrastructureCost": 2000,
+      "total": 271000
+    },
+    "benefits": {
+      "developmentTimeSaved": 120,
+      "designTimeSaved": 60,
+      "hourlyRate": 75,
+      "componentReuseCount": 150,
+      "reuseValueMultiplier": 50,
+      "bugsReduced": 45,
+      "bugFixCost": 200,
+      "consistencyValue": 15000,
+      "total": 346500
+    }
+  },
+  "okrs": [
+    {
+      "title": "Incrementar la adopción del Design System",
+      "description": "Mejorar el porcentaje de componentes del DS utilizados en todos los productos",
+      "quarter": "2024-Q1",
+      "keyResults": [
+        {
+          "title": "Alcanzar 80% de adopción de componentes",
+          "targetValue": 80,
+          "currentValue": 72,
+          "unit": "%"
+        },
+        {
+          "title": "Reducir componentes desconectados a menos de 5",
+          "targetValue": 5,
+          "currentValue": 4,
+          "unit": "componentes"
+        }
+      ]
+    }
+  ]
+}
+

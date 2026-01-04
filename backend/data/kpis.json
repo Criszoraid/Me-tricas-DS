@@ -1,0 +1,62 @@
+[
+  {
+    "id": "kpi-adoption-1767470682121",
+    "name": "Component Adoption",
+    "description": "Percentage of available components being used",
+    "currentValue": 87.2,
+    "previousValue": 84.1,
+    "trend": "up",
+    "thresholds": {
+      "critical": 0,
+      "warning": 30,
+      "good": 60,
+      "excellent": 80
+    },
+    "status": "excellent",
+    "sourceMetrics": [
+      "figma-sample-0"
+    ],
+    "calculationMethod": "component_adoption",
+    "lastUpdated": 1767470682121
+  },
+  {
+    "id": "kpi-efficiency-1767470682121",
+    "name": "Development Efficiency",
+    "description": "Percentage of repositories using the Design System",
+    "currentValue": 51.21951219512195,
+    "previousValue": 46.15384615384615,
+    "trend": "up",
+    "thresholds": {
+      "critical": 0,
+      "warning": 25,
+      "good": 50,
+      "excellent": 75
+    },
+    "status": "good",
+    "sourceMetrics": [
+      "github-sample-0"
+    ],
+    "calculationMethod": "dev_efficiency",
+    "lastUpdated": 1767470682121
+  },
+  {
+    "id": "kpi-issues-1767470682121",
+    "name": "Issue Resolution Rate",
+    "description": "Percentage of UI-related issues resolved",
+    "currentValue": 83.33333333333334,
+    "previousValue": 83.33333333333334,
+    "trend": "stable",
+    "thresholds": {
+      "critical": 0,
+      "warning": 50,
+      "good": 70,
+      "excellent": 90
+    },
+    "status": "good",
+    "sourceMetrics": [
+      "github-sample-0"
+    ],
+    "calculationMethod": "issue_resolution",
+    "lastUpdated": 1767470682121
+  }
+]

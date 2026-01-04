@@ -1,0 +1,207 @@
+/* Neumorphic Design Styles */
+
+/* Base neumorphic shadow utilities */
+.neumorphic {
+  background: #f0f0f3;
+  border-radius: 20px;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+}
+
+.neumorphic-inset {
+  background: #f0f0f3;
+  border-radius: 20px;
+  box-shadow: 
+    inset 6px 6px 12px rgba(163, 177, 198, 0.6),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.5);
+}
+
+.neumorphic-pressed {
+  background: #f0f0f3;
+  border-radius: 20px;
+  box-shadow: 
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Neumorphic card */
+.neumorphic-card {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.neumorphic-card:hover {
+  box-shadow: 
+    12px 12px 20px rgba(163, 177, 198, 0.7),
+    -12px -12px 20px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.neumorphic-card:active {
+  box-shadow: 
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+  transform: translateY(0);
+}
+
+/* Neumorphic button */
+.neumorphic-button {
+  background: #f0f0f3;
+  border: none;
+  border-radius: 15px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: #4a5568;
+  cursor: pointer;
+  box-shadow: 
+    6px 6px 12px rgba(163, 177, 198, 0.6),
+    -6px -6px 12px rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease;
+}
+
+.neumorphic-button:hover {
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.7),
+    -8px -8px 16px rgba(255, 255, 255, 0.6);
+}
+
+.neumorphic-button:active {
+  box-shadow: 
+    inset 3px 3px 6px rgba(163, 177, 198, 0.6),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.5);
+}
+
+/* Neumorphic input */
+.neumorphic-input {
+  background: #f0f0f3;
+  border: none;
+  border-radius: 15px;
+  padding: 0.75rem 1rem;
+  box-shadow: 
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+  color: #4a5568;
+  font-size: 0.9375rem;
+  transition: all 0.2s ease;
+}
+
+.neumorphic-input:focus {
+  outline: none;
+  box-shadow: 
+    inset 6px 6px 12px rgba(163, 177, 198, 0.7),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.6);
+}
+
+/* Neumorphic background */
+.neumorphic-bg {
+  background: #e0e0e3;
+  min-height: 100vh;
+}
+
+/* Neumorphic container */
+.neumorphic-container {
+  background: #f0f0f3;
+  border-radius: 25px;
+  padding: 2rem;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+}
+
+/* Neumorphic metric card */
+.neumorphic-metric {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.6),
+    -8px -8px 16px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.neumorphic-metric:hover {
+  box-shadow: 
+    10px 10px 20px rgba(163, 177, 198, 0.7),
+    -10px -10px 20px rgba(255, 255, 255, 0.6);
+  transform: translateY(-3px);
+}
+
+/* Neumorphic chart container */
+.neumorphic-chart {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+}
+
+/* Neumorphic badge */
+.neumorphic-badge {
+  background: #f0f0f3;
+  border-radius: 15px;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.5);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+/* Neumorphic toggle */
+.neumorphic-toggle {
+  background: #f0f0f3;
+  border-radius: 15px;
+  padding: 0.25rem;
+  display: inline-flex;
+  gap: 0.25rem;
+  box-shadow: 
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+.neumorphic-toggle-button {
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.neumorphic-toggle-button.active {
+  background: #f0f0f3;
+  color: #4a5568;
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.6),
+    -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Dark mode neumorphic (optional) */
+.neumorphic-dark {
+  background: #2d3748;
+}
+
+.neumorphic-dark .neumorphic-card,
+.neumorphic-dark .neumorphic-metric,
+.neumorphic-dark .neumorphic-chart {
+  background: #374151;
+  box-shadow: 
+    9px 9px 16px rgba(0, 0, 0, 0.4),
+    -9px -9px 16px rgba(75, 85, 99, 0.3);
+}
+

@@ -1,0 +1,29 @@
+{
+  "title": "Incrementar la adopción del Design System",
+  "description": "Mejorar el porcentaje de componentes del DS utilizados en todos los productos y reducir la fragmentación",
+  "quarter": "2024-Q1",
+  "keyResults": [
+    {
+      "title": "Alcanzar 80% de adopción de componentes",
+      "description": "Medido por el porcentaje de componentes usados vs disponibles",
+      "targetValue": 80,
+      "currentValue": 72,
+      "unit": "%"
+    },
+    {
+      "title": "Reducir componentes desconectados a menos de 5",
+      "description": "Componentes que han sido modificados y perdido conexión con el DS",
+      "targetValue": 5,
+      "currentValue": 4,
+      "unit": "componentes"
+    },
+    {
+      "title": "Implementar DS en 15 nuevos repositorios",
+      "description": "Expandir el uso del DS a más proyectos dentro de la organización",
+      "targetValue": 15,
+      "currentValue": 12,
+      "unit": "repositorios"
+    }
+  ]
+}
+

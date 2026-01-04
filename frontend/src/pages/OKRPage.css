@@ -1,0 +1,220 @@
+.okr-page-content {
+  max-width: 1400px;
+}
+
+.okr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.okr-card {
+  background: #f0f0f3;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 
+    9px 9px 16px rgba(163, 177, 198, 0.6),
+    -9px -9px 16px rgba(255, 255, 255, 0.5);
+  border: none;
+  transition: all 0.3s;
+}
+
+.okr-card:hover {
+  box-shadow: 
+    12px 12px 20px rgba(163, 177, 198, 0.7),
+    -12px -12px 20px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.okr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.okr-header-main {
+  flex: 1;
+}
+
+.okr-objective {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 0.5rem 0;
+}
+
+.okr-description {
+  font-size: 0.9375rem;
+  color: #6c757d;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.okr-progress-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.okr-progress-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.okr-progress-value {
+  font-size: 0.875rem;
+  color: #212529;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.okr-edit-button {
+  background: none;
+  border: none;
+  color: #adb5bd;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.okr-edit-button:hover {
+  color: #0d6efd;
+}
+
+.okr-key-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.key-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.key-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.key-result-description {
+  font-size: 0.875rem;
+  color: #212529;
+  font-weight: 500;
+  flex: 1;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.key-result-values {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.key-result-current-target {
+  font-size: 0.875rem;
+  color: #6c757d;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.key-result-info {
+  font-size: 1rem;
+  color: #adb5bd;
+  cursor: help;
+}
+
+.key-result-progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: #e9ecef;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.key-result-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+}
+
+.key-result-progress-complete {
+  background-color: #198754;
+}
+
+.key-result-progress-on-track {
+  background-color: #0d6efd;
+}
+
+.key-result-progress-at-risk {
+  background-color: #fd7e14;
+}
+
+.okr-explanation {
+  background: #eff6ff;
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid #bfdbfe;
+}
+
+.okr-explanation-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 1rem 0;
+}
+
+.okr-explanation-text {
+  font-size: 0.9375rem;
+  color: #495057;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.okr-explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.okr-explanation-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.okr-explanation-label {
+  font-size: 0.9375rem;
+  color: #212529;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.okr-explanation-detail {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .okr-explanation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .key-result-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

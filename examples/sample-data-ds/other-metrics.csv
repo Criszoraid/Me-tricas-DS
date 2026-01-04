@@ -1,0 +1,17 @@
+metric,period,value,target,notes
+screen_adoption,2024-Q4,72,90,Based on Figma audit
+local_libraries,2024-Q4,8,3,Marketing and Legacy teams have custom libs
+percentage_adoption,2024-Q4,68,90,Company-wide adoption rate
+doc_visits,2024-12,1240,2000,Storybook + Notion combined
+doc_visits,2024-11,1180,2000,
+doc_visits,2024-10,1050,2000,
+external_contributions,2024-Q4,12,25,PRs from non-DS team members
+okr_completion,2024-Q4,65,90,3 of 5 KRs met
+platform_uptime,2024-Q4,98.2,99.9,2 incidents in December
+task_time_big_patterns,2024-Q4,16,8,Average hours for complex components
+user_interviews,2024-Q4,8,20,Conducted by UX Research
+stakeholder_interviews,2024-Q4,4,10,VP Engineering + VP Product
+active_teams,2024-Q4,10,15,Teams actively using DS
+new_components_shipped,2024-Q4,8,12,New components added to library
+breaking_changes,2024-Q4,2,0,v3.0 and v3.1 releases
+deprecations,2024-Q4,4,0,Legacy components marked deprecated

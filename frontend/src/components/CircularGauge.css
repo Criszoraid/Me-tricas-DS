@@ -1,0 +1,80 @@
+.circular-gauge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.gauge-background {
+  opacity: 0.15;
+  stroke: #dee2e6;
+}
+
+.gauge-progress {
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.gauge-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gauge-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #212529;
+  line-height: 1;
+}
+
+.gauge-label {
+  font-size: 0.75rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+.gauge-large {
+  width: 200px;
+  height: 200px;
+}
+
+.gauge-large .gauge-value {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.gauge-large .gauge-label {
+  font-size: 0.875rem;
+}
+
+.gauge-medium {
+  width: 140px;
+  height: 140px;
+}
+
+.gauge-medium .gauge-value {
+  font-size: 2.5rem;
+}
+
+.gauge-small {
+  width: 100px;
+  height: 100px;
+}
+
+.gauge-small .gauge-value {
+  font-size: 1.75rem;
+}
+
+.gauge-small .gauge-label {
+  font-size: 0.625rem;
+}
+

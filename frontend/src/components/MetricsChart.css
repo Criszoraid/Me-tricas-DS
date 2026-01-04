@@ -1,0 +1,33 @@
+.metrics-chart {
+  margin-top: 2rem;
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+
+.chart-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px;
+    padding: 0.5rem;
+  }
+}
+

@@ -1,0 +1,14 @@
+{
+  "type": "development",
+  "data": {
+    "dsPackageInstalls": 22,
+    "reposUsingDS": 18,
+    "customComponentsCount": 12,
+    "componentsBuiltFromScratch": 8,
+    "uiRelatedIssues": 5,
+    "resolvedIssues": 4,
+    "organization": "mi-organizacion",
+    "isManual": false
+  }
+}
+

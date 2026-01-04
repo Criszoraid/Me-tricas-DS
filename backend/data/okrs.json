@@ -1,0 +1,67 @@
+[
+  {
+    "id": "okr-sample-1",
+    "title": "Incrementar la adopción del Design System",
+    "description": "Mejorar el porcentaje de componentes del DS utilizados en todos los productos",
+    "keyResults": [
+      {
+        "id": "kr-1",
+        "title": "Alcanzar 80% de adopción de componentes",
+        "description": "Medido por el porcentaje de componentes usados vs disponibles",
+        "targetValue": 80,
+        "currentValue": 72,
+        "unit": "%",
+        "progress": 90
+      },
+      {
+        "id": "kr-2",
+        "title": "Reducir componentes desconectados a menos de 5",
+        "description": "Componentes que han sido modificados y perdido conexión con el DS",
+        "targetValue": 5,
+        "currentValue": 4,
+        "unit": "componentes",
+        "progress": 80
+      },
+      {
+        "id": "kr-3",
+        "title": "Implementar DS en 15 nuevos repositorios",
+        "description": "Expandir el uso del DS a más proyectos",
+        "targetValue": 15,
+        "currentValue": 12,
+        "unit": "repositorios",
+        "progress": 80
+      }
+    ],
+    "progress": 83.3,
+    "quarter": "2026-Q1",
+    "status": "on-track"
+  },
+  {
+    "id": "okr-sample-2",
+    "title": "Mejorar la calidad y consistencia",
+    "description": "Reducir bugs de UI y mejorar la consistencia visual",
+    "keyResults": [
+      {
+        "id": "kr-4",
+        "title": "Reducir bugs de UI en un 40%",
+        "description": "Comparado con el trimestre anterior",
+        "targetValue": 40,
+        "currentValue": 35,
+        "unit": "%",
+        "progress": 87.5
+      },
+      {
+        "id": "kr-5",
+        "title": "Aumentar la resolución de issues a 85%",
+        "description": "Porcentaje de issues de UI resueltos",
+        "targetValue": 85,
+        "currentValue": 78,
+        "unit": "%",
+        "progress": 91.8
+      }
+    ],
+    "progress": 89.6,
+    "quarter": "2026-Q1",
+    "status": "on-track"
+  }
+]

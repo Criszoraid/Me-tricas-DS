@@ -1,0 +1,24 @@
+{
+  "costs": {
+    "teamSize": 3,
+    "averageSalary": 80000,
+    "timeMonths": 12,
+    "maintenanceHoursPerMonth": 40,
+    "maintenanceRate": 75,
+    "toolsCost": 5000,
+    "infrastructureCost": 2000
+  },
+  "benefits": {
+    "developmentTimeSaved": 120,
+    "designTimeSaved": 60,
+    "hourlyRate": 75,
+    "componentReuseCount": 150,
+    "reuseValueMultiplier": 50,
+    "bugsReduced": 45,
+    "bugFixCost": 200,
+    "consistencyValue": 15000
+  },
+  "period": "2024-Q1",
+  "confidenceNotes": "Datos basados en estimaciones del equipo y métricas recopiladas durante el último trimestre."
+}
+
