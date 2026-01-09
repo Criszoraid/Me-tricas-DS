@@ -16,6 +16,7 @@ import {
   ROI,
   Objective,
   KeyResult,
+  KPI,
 } from './models/types.js';
 import { generateAllSampleData } from './utils/sampleData.js';
 
@@ -464,6 +465,90 @@ app.get('/api/kpis', async (req, res) => {
   }
 });
 
+app.post('/api/kpis', async (req, res) => {
+  try {
+    const { name, description, currentValue, previousValue, trend, thresholds, calculationMethod } = req.body;
+
+    const kpi: KPI = {
+      id: `kpi-manual-${Date.now()}`,
+      name: name || 'KPI Manual',
+      description: description || '',
+      currentValue: currentValue || 0,
+      previousValue: previousValue || 0,
+      trend: trend || 'stable',
+      thresholds: thresholds || {
+        critical: 0,
+        warning: 50,
+        good: 70,
+        excellent: 90,
+      },
+      status: 'unknown',
+      sourceMetrics: [],
+      calculationMethod: calculationMethod || 'manual',
+      lastUpdated: Date.now(),
+    };
+
+    // Determine status based on current value and thresholds
+    if (kpi.currentValue >= kpi.thresholds.excellent) {
+      kpi.status = 'excellent';
+    } else if (kpi.currentValue >= kpi.thresholds.good) {
+      kpi.status = 'good';
+    } else if (kpi.currentValue >= kpi.thresholds.warning) {
+      kpi.status = 'warning';
+    } else {
+      kpi.status = 'critical';
+    }
+
+    await storage.addKPI(kpi);
+
+    res.json({ kpi, message: 'KPI creado manualmente' });
+  } catch (error: any) {
+    console.error('KPI creation error:', error);
+    res.status(500).json({ error: error.message || 'Failed to create KPI' });
+  }
+});
+
+app.put('/api/kpis/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    // Update status if value or thresholds changed
+    if (updates.currentValue !== undefined || updates.thresholds) {
+      const currentValue = updates.currentValue !== undefined 
+        ? updates.currentValue 
+        : storage.getKPIs().find(k => k.id === id)?.currentValue || 0;
+      const thresholds = updates.thresholds || storage.getKPIs().find(k => k.id === id)?.thresholds || {
+        critical: 0,
+        warning: 50,
+        good: 70,
+        excellent: 90,
+      };
+
+      if (currentValue >= thresholds.excellent) {
+        updates.status = 'excellent';
+      } else if (currentValue >= thresholds.good) {
+        updates.status = 'good';
+      } else if (currentValue >= thresholds.warning) {
+        updates.status = 'warning';
+      } else {
+        updates.status = 'critical';
+      }
+    }
+
+    updates.lastUpdated = Date.now();
+
+    await storage.updateKPI(id, updates);
+    const kpis = storage.getKPIs();
+    const updated = kpis.find(k => k.id === id);
+
+    res.json({ kpi: updated, message: 'KPI actualizado' });
+  } catch (error: any) {
+    console.error('KPI update error:', error);
+    res.status(500).json({ error: error.message || 'Failed to update KPI' });
+  }
+});
+
 // ============================================================================
 // OKRs
 // ============================================================================
@@ -550,6 +635,140 @@ app.put('/api/okrs/:id', async (req, res) => {
   } catch (error: any) {
     console.error('OKR update error:', error);
     res.status(500).json({ error: error.message || 'Failed to update OKR' });
+  }
+});
+
+// ============================================================================
+// KPI/OKR FILE UPLOAD
+// ============================================================================
+
+app.post('/api/kpis-okrs/upload', async (req, res) => {
+  try {
+    const { type, fileContent, fileName } = req.body;
+
+    if (!type || !fileContent) {
+      return res.status(400).json({ error: 'type and fileContent are required' });
+    }
+
+    if (type !== 'kpi' && type !== 'okr') {
+      return res.status(400).json({ error: 'type must be "kpi" or "okr"' });
+    }
+
+    // Determine file type
+    const isJSON = fileName?.endsWith('.json') || fileContent.trim().startsWith('{') || fileContent.trim().startsWith('[');
+    const isCSV = fileName?.endsWith('.csv') || (!isJSON && fileContent.includes(','));
+
+    let parsedData: any;
+    
+    try {
+      if (isJSON) {
+        parsedData = JSON.parse(fileContent);
+      } else if (isCSV) {
+        // Simple CSV parsing for KPIs/OKRs
+        const lines = fileContent.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+        const rows: any[] = [];
+        
+        for (let i = 1; i < lines.length; i++) {
+          const values = lines[i].split(',').map(v => v.trim());
+          const row: any = {};
+          headers.forEach((header, index) => {
+            row[header] = values[index] || '';
+          });
+          rows.push(row);
+        }
+        parsedData = rows;
+      } else {
+        return res.status(400).json({ error: 'Unsupported file format. Use JSON or CSV' });
+      }
+    } catch (parseError: any) {
+      return res.status(400).json({ error: `Parse error: ${parseError.message}` });
+    }
+
+    if (type === 'kpi') {
+      // Handle KPI import
+      const kpis = Array.isArray(parsedData) ? parsedData : [parsedData];
+      
+      for (const kpiData of kpis) {
+        const kpi: KPI = {
+          id: `kpi-file-${Date.now()}-${Math.random()}`,
+          name: kpiData.name || 'KPI Importado',
+          description: kpiData.description || '',
+          currentValue: Number(kpiData.currentValue) || 0,
+          previousValue: Number(kpiData.previousValue) || 0,
+          trend: kpiData.trend || 'stable',
+          thresholds: kpiData.thresholds || {
+            critical: 0,
+            warning: 50,
+            good: 70,
+            excellent: 90,
+          },
+          status: 'unknown',
+          sourceMetrics: [],
+          calculationMethod: kpiData.calculationMethod || 'file',
+          lastUpdated: Date.now(),
+        };
+
+        // Determine status
+        if (kpi.currentValue >= kpi.thresholds.excellent) {
+          kpi.status = 'excellent';
+        } else if (kpi.currentValue >= kpi.thresholds.good) {
+          kpi.status = 'good';
+        } else if (kpi.currentValue >= kpi.thresholds.warning) {
+          kpi.status = 'warning';
+        } else {
+          kpi.status = 'critical';
+        }
+
+        await storage.addKPI(kpi);
+      }
+
+      res.json({ message: `${kpis.length} KPI(s) importado(s) desde archivo` });
+    } else {
+      // Handle OKR import
+      const okrs = Array.isArray(parsedData) ? parsedData : [parsedData];
+      
+      for (const okrData of okrs) {
+        const keyResults = (okrData.keyResults || []).map((kr: any) => ({
+          id: `kr-${Date.now()}-${Math.random()}`,
+          title: kr.title || '',
+          description: kr.description || '',
+          targetValue: Number(kr.targetValue) || 0,
+          currentValue: Number(kr.currentValue) || 0,
+          unit: kr.unit || '',
+          progress: Number(kr.targetValue) > 0
+            ? Math.min(100, (Number(kr.currentValue) || 0) / Number(kr.targetValue) * 100)
+            : 0,
+        }));
+
+        const progress = keyResults.length > 0
+          ? keyResults.reduce((sum: number, kr: KeyResult) => sum + kr.progress, 0) / keyResults.length
+          : 0;
+
+        const status: Objective['status'] = 
+          progress >= 100 ? 'complete' :
+          progress >= 75 ? 'on-track' :
+          progress >= 50 ? 'at-risk' :
+          'behind';
+
+        const objective: Objective = {
+          id: `okr-file-${Date.now()}-${Math.random()}`,
+          title: okrData.title || 'OKR Importado',
+          description: okrData.description || '',
+          keyResults,
+          progress,
+          quarter: okrData.quarter || getCurrentQuarter(),
+          status,
+        };
+
+        await storage.addOKR(objective);
+      }
+
+      res.json({ message: `${okrs.length} OKR(s) importado(s) desde archivo` });
+    }
+  } catch (error: any) {
+    console.error('KPI/OKR file upload error:', error);
+    res.status(500).json({ error: error.message || 'Failed to process file' });
   }
 });
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './contexts/AppContext';
 import GlobalControls from './components/GlobalControls';
 import Dashboard from './pages/Dashboard';
@@ -8,6 +8,9 @@ import DevelopmentPage from './pages/DevelopmentPage';
 import AdoptionPage from './pages/AdoptionPage';
 import EfficiencyPage from './pages/EfficiencyPage';
 import ROIPage from './pages/ROIPage';
+import ProductMetricDetailPage from './pages/ProductMetricDetailPage';
+import ComponentDetailPage from './pages/ComponentDetailPage';
+import DataSourcesPage from './pages/DataSourcesPage';
 import { DashboardData } from './types';
 import { api } from './services/api';
 import { exportToExcel, exportToPDF } from './utils/export';
@@ -77,7 +80,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppProvider>
         <div className="app">
           <GlobalControls
@@ -101,21 +104,37 @@ function App() {
             element={<ProductPage data={dashboardData} onRefresh={loadDashboard} />} 
           />
           <Route 
+            path="/metrics/product/:metricType" 
+            element={<ProductMetricDetailPage data={dashboardData} />} 
+          />
+          <Route 
+            path="/components/:componentName" 
+            element={<ComponentDetailPage data={dashboardData} />} 
+          />
+          <Route 
+            path="/data-sources" 
+            element={<DataSourcesPage />} 
+          />
+          <Route 
             path="/desarrollo" 
             element={<DevelopmentPage data={dashboardData} onRefresh={loadDashboard} />} 
+          />
+          <Route 
+            path="/kpis" 
+            element={<AdoptionPage data={dashboardData} onRefresh={loadDashboard} />} 
           />
           <Route 
             path="/adopcion" 
             element={<AdoptionPage data={dashboardData} onRefresh={loadDashboard} />} 
           />
-                <Route
-                  path="/eficiencia"
-                  element={<EfficiencyPage data={dashboardData} onRefresh={loadDashboard} />}
-                />
-                <Route
-                  path="/okrs"
-                  element={<EfficiencyPage data={dashboardData} onRefresh={loadDashboard} />}
-                />
+          <Route
+            path="/okrs"
+            element={<EfficiencyPage data={dashboardData} onRefresh={loadDashboard} />}
+          />
+          <Route
+            path="/eficiencia"
+            element={<EfficiencyPage data={dashboardData} onRefresh={loadDashboard} />}
+          />
           <Route 
             path="/roi" 
             element={<ROIPage data={dashboardData} onRefresh={loadDashboard} />} 
@@ -124,7 +143,7 @@ function App() {
           </Routes>
         </div>
       </AppProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

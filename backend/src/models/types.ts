@@ -185,12 +185,22 @@ export interface ROIBenefits {
   total: number;
 }
 
+export interface ROIBaseline {
+  costs: ROICosts;
+  benefits: ROIBenefits;
+  period?: string;
+  notes?: string;
+}
+
 export interface ROI {
   id: string;
   timestamp: number;
   
   costs: ROICosts;
   benefits: ROIBenefits;
+  
+  // Baseline comparison (opcional)
+  baseline?: ROIBaseline;
   
   // ROI Calculation
   roi: number; // Percentage: (benefits - costs) / costs * 100

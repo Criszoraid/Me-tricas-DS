@@ -45,3 +45,4 @@ npm run dev
 2. Verifica que el backend esté corriendo en puerto 3001
 3. Verifica que no haya errores de compilación en la terminal
 
+

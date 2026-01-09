@@ -17,6 +17,7 @@ import {
 import Tooltip from '../components/Tooltip';
 import FileUpload from '../components/FileUpload';
 import EditMetricModal from '../components/EditMetricModal';
+import NpmStatsCard from '../components/development/NpmStatsCard';
 import { api } from '../services/api';
 import './PageLayout.css';
 import './DevelopmentPage.css';
@@ -67,6 +68,7 @@ export default function DevelopmentPage({ data, onRefresh }: { data: DashboardDa
     setUploadSuccess(false);
   };
 
+
   // Calcular métricas principales
   const dsComponentUsage = latestDev && (latestDev.reposUsingDS + latestDev.customComponentsCount) > 0
     ? Math.round((latestDev.reposUsingDS / (latestDev.reposUsingDS + latestDev.customComponentsCount)) * 100)
@@ -75,6 +77,16 @@ export default function DevelopmentPage({ data, onRefresh }: { data: DashboardDa
   const uiBugs = latestDev ? latestDev.uiRelatedIssues : 12;
   const avgImplementationTime = 2.3; // Estimado
   const bundleSizeImpact = -14; // Estimado
+
+  // npm Stats (estimación a partir de installs)
+  const prevDev = data.developmentMetrics.length > 1
+    ? data.developmentMetrics[data.developmentMetrics.length - 2]
+    : null;
+  const installs = latestDev?.dsPackageInstalls ?? 11200;
+  const prevInstalls = prevDev?.dsPackageInstalls ?? installs;
+  const downloadsMonthly = installs;
+  const downloadsWeekly = Math.round(downloadsMonthly / 4);
+  const downloadsTrend = prevInstalls > 0 ? Math.round(((downloadsMonthly - prevInstalls) / prevInstalls) * 100) : 0;
 
   // Gráfico de uso de componentes
   const componentUsageData = {
@@ -127,6 +139,7 @@ export default function DevelopmentPage({ data, onRefresh }: { data: DashboardDa
     { action: 'Migrated to new Card API', repo: 'web-app', time: '2 days ago' },
   ];
 
+
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -161,12 +174,13 @@ export default function DevelopmentPage({ data, onRefresh }: { data: DashboardDa
         <div className="header-nav">
           <Link to="/" className="back-link">← Resumen</Link>
           <nav className="page-nav">
-            <Link to="/" className="nav-link">📊 Dashboard</Link>
-            <Link to="/producto" className="nav-link">📦 Métricas de Producto</Link>
-            <Link to="/desarrollo" className="nav-link active">💻 Desarrollo</Link>
-            <Link to="/kpis" className="nav-link">🎯 KPIs</Link>
-            <Link to="/okrs" className="nav-link">✅ OKRs</Link>
-            <Link to="/roi" className="nav-link">💰 ROI</Link>
+            <Link to="/" className="nav-link">Dashboard</Link>
+            <Link to="/producto" className="nav-link">Producto</Link>
+            <Link to="/desarrollo" className="nav-link active">Desarrollo</Link>
+            <Link to="/kpis" className="nav-link">KPIs</Link>
+            <Link to="/okrs" className="nav-link">OKRs</Link>
+            <Link to="/roi" className="nav-link">ROI</Link>
+            <Link to="/data-sources" className="nav-link">Fuentes</Link>
           </nav>
         </div>
         <div className="page-header-main">
@@ -265,6 +279,19 @@ export default function DevelopmentPage({ data, onRefresh }: { data: DashboardDa
               <Line data={componentUsageData} options={chartOptions} />
             </div>
           </div>
+        </section>
+
+        {/* npm Stats */}
+        <section className="dev-chart-section">
+          <NpmStatsCard
+            inferred={{
+              packageName: '@acme/design-system',
+              downloadsWeekly,
+              downloadsMonthly,
+              downloadsTrend,
+              dependentRepos: latestDev?.reposUsingDS ?? 19,
+            }}
+          />
         </section>
 
         {/* Repository Breakdown and Recent Activity */}

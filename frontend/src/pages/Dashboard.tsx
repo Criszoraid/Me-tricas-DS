@@ -2,8 +2,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { DashboardData } from '../types';
 import { ArrowUp, TrendingUp, Package, Clock, AlertTriangle, Accessibility } from 'lucide-react';
 import { MetricCard } from '../components/MetricCard';
+import ChartCard from '../components/ChartCard';
 import { ROIIndicator } from '../components/ROIIndicator';
 import { TrendChart } from '../components/TrendChart';
+import HealthScoreCard from '../components/dashboard/HealthScoreCard';
+import { calculateHealthScore } from '../utils/calculations/healthScore';
 import './Dashboard.css';
 
 interface DashboardProps {
@@ -35,7 +38,7 @@ export default function Dashboard({ data }: DashboardProps) {
     ? data.designMetrics[data.designMetrics.length - 1]
     : null;
   const accessibilityScore = latestDesign?.accessibilityScore || 90;
-  const accessibilityIssues = latestDesign?.accessibilityIssues || 2;
+  const accessibilityIssues = latestDesign?.criticalAccessibilityIssues || 2;
 
   // ROI
   const roi = data.roi;
@@ -46,6 +49,24 @@ export default function Dashboard({ data }: DashboardProps) {
   const monthlyTimeSaved = roi 
     ? Math.round((roi.benefits.developmentTimeSaved || 0) + (roi.benefits.designTimeSaved || 0))
     : 802;
+
+  // Health Score (global)
+  const latestDev = data.developmentMetrics.length > 0 ? data.developmentMetrics[data.developmentMetrics.length - 1] : null;
+  const bugCount = latestDev?.uiRelatedIssues ?? 12;
+  const totalComponents = latestDesign?.totalComponents ?? 150;
+  const detachedComponents = latestDesign?.detachedComponents ?? 5;
+  const deviationRate = totalComponents > 0 ? (detachedComponents / totalComponents) * 100 : 0;
+  const governanceScore = Math.max(0, 100 - deviationRate);
+  const npsDefault = 42;
+
+  const healthInputs = {
+    adoptionRate,
+    bugCount,
+    timeSavedHours: monthlyTimeSaved,
+    nps: npsDefault,
+    consistencyScore: governanceScore,
+  };
+  const health = calculateHealthScore(healthInputs);
 
   // Datos para gráficos - Adoption Trend
   const adoptionTrend = data.designMetrics.slice(-6).map((metric, index) => {
@@ -67,6 +88,54 @@ export default function Dashboard({ data }: DashboardProps) {
     };
   });
 
+  // Datos para Chart Cards
+  // 1. Adopción DS (donut)
+  const adoptionDonutData = {
+    labels: ['Adoptado', 'No adoptado'],
+    datasets: [{
+      data: [adoptionRate, 100 - adoptionRate],
+      backgroundColor: ['#3b82f6', '#e5e7eb'],
+      borderWidth: 0,
+    }],
+  };
+
+  // 2. Reutilización (stacked bar)
+  const reuseBarData = {
+    labels: [''],
+    datasets: [
+      {
+        label: 'DS',
+        data: [componentReuse],
+        backgroundColor: '#3b82f6',
+      },
+      {
+        label: 'Custom',
+        data: [100 - componentReuse],
+        backgroundColor: '#e5e7eb',
+      },
+    ],
+  };
+
+  // 3. Desviaciones (sparkline)
+  const deviationsSparklineData = {
+    labels: adoptionTrend.map(d => d.month),
+    datasets: [{
+      data: data.designMetrics.slice(-6).map(m => m.detachedComponents),
+      borderColor: '#dc2626',
+      backgroundColor: 'transparent',
+    }],
+  };
+
+  // 4. Accesibilidad (gauge/donut)
+  const accessibilityGaugeData = {
+    labels: ['Accesible', 'Issues'],
+    datasets: [{
+      data: [accessibilityScore, 100 - accessibilityScore],
+      backgroundColor: [accessibilityScore >= 90 ? '#059669' : accessibilityScore >= 70 ? '#f59e0b' : '#dc2626', '#e5e7eb'],
+      borderWidth: 0,
+    }],
+  };
+
   return (
     <div className="dashboard-container">
       {/* Header con navegación */}
@@ -78,10 +147,12 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
           <nav className="dashboard-top-nav">
             <Link to="/" className="nav-link active">Dashboard</Link>
-            <Link to="/producto" className="nav-link">Métricas</Link>
+            <Link to="/producto" className="nav-link">Producto</Link>
+            <Link to="/desarrollo" className="nav-link">Desarrollo</Link>
             <Link to="/kpis" className="nav-link">KPIs</Link>
             <Link to="/okrs" className="nav-link">OKRs</Link>
             <Link to="/roi" className="nav-link">ROI</Link>
+            <Link to="/data-sources" className="nav-link">Fuentes</Link>
           </nav>
         </div>
       </header>
@@ -108,57 +179,71 @@ export default function Dashboard({ data }: DashboardProps) {
         </div>
       </div>
 
-          {/* KPI Summary Cards */}
-          <div className="kpi-cards-grid">
-            <MetricCard
-              label="Tasa de Adopción"
+      {/* Health Score Global */}
+      <HealthScoreCard inputs={healthInputs} />
+
+          {/* Visual Summary Grid - Chart Cards */}
+          <div className="chart-cards-grid">
+            <ChartCard
+              title="Adopción DS"
               value={`${adoptionRate.toFixed(0)}%`}
-              change="+6%"
-              trend="up"
+              subtitle="Adopción en productos"
+              chartType="donut"
+              chartData={adoptionDonutData}
               icon={Package}
-              tooltip="Porcentaje de productos que utilizan el design system"
-              source="Figma"
-              onClick={() => navigate('/producto')}
-            />
-            <MetricCard
-              label="Reutilización de Componentes"
-              value={`${componentReuse}%`}
-              change="+3%"
+              navigateTo="/metrics/product/adoption"
               trend="up"
-              icon={TrendingUp}
-              tooltip="Porcentaje de UI construido con componentes DS vs personalizados"
-              source="GitHub"
-              onClick={() => navigate('/desarrollo')}
+              trendValue="+6%"
+              color="#3b82f6"
             />
-            <MetricCard
-              label="Tiempo Ahorrado (mensual)"
+            <ChartCard
+              title="Tiempo Ahorrado"
               value={`${monthlyTimeSaved}h`}
-              change="+58h"
-              trend="up"
+              subtitle="Horas mensuales"
+              chartType="sparkline"
+              chartData={{
+                labels: timeSavedTrend.map(d => d.month),
+                datasets: [{
+                  data: timeSavedTrend.map(d => d.design + d.dev),
+                  borderColor: '#059669',
+                }],
+              }}
               icon={Clock}
-              tooltip="Tiempo combinado ahorrado en diseño y desarrollo"
-              source="Manual"
-              onClick={() => navigate('/kpis')}
+              navigateTo="/roi"
+              queryParams={{ section: 'benefits', metric: 'time-saved' }}
+              trend="up"
+              trendValue="+58h"
+              color="#059669"
             />
-            <MetricCard
-              label="Desviaciones"
-              value={deviations.toString()}
-              change="-8"
-              trend="down"
-              icon={AlertTriangle}
-              tooltip="Instancias desconectadas y personalizaciones"
-              source="Figma"
-              onClick={() => navigate('/producto')}
-            />
-            <MetricCard
-              label="Accesibilidad"
+            <ChartCard
+              title="Accesibilidad"
               value={`${accessibilityScore.toFixed(0)}%`}
-              change={`${accessibilityIssues} issues`}
-              trend={accessibilityIssues <= 2 ? "up" : "down"}
+              subtitle={`${accessibilityIssues} issues críticos`}
+              chartType="donut"
+              chartData={accessibilityGaugeData}
               icon={Accessibility}
-              tooltip={`Puntuación de accesibilidad: ${accessibilityScore.toFixed(0)}%. ${accessibilityIssues} issues críticos detectados.`}
-              source="Figma"
-              onClick={() => navigate('/producto')}
+              navigateTo="/metrics/product/accessibility"
+              trend={accessibilityIssues <= 2 ? "up" : "down"}
+              trendValue={`${accessibilityIssues} issues`}
+              color={accessibilityScore >= 90 ? "#059669" : "#f59e0b"}
+            />
+            <ChartCard
+              title="Consistencia diseño-código"
+              value={`${latestDesign ? Math.round(latestDesign.adoptionPercentage) : 94}%`}
+              subtitle="Score de consistencia"
+              chartType="sparkline"
+              chartData={{
+                labels: adoptionTrend.map(d => d.month),
+                datasets: [{
+                  data: data.designMetrics.slice(-6).map(m => m.adoptionPercentage),
+                  borderColor: '#8b5cf6',
+                }],
+              }}
+              icon={TrendingUp}
+              navigateTo="/kpis"
+              trend="up"
+              trendValue="+2%"
+              color="#8b5cf6"
             />
           </div>
 

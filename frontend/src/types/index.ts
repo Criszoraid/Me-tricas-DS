@@ -100,11 +100,19 @@ export interface ROIBenefits {
   total: number;
 }
 
+export interface ROIBaseline {
+  costs: ROICosts;
+  benefits: ROIBenefits;
+  period?: string;
+  notes?: string;
+}
+
 export interface ROI {
   id: string;
   timestamp: number;
   costs: ROICosts;
   benefits: ROIBenefits;
+  baseline?: ROIBaseline;
   roi: number;
   netValue: number;
   status: 'negative' | 'low' | 'medium' | 'high';
@@ -113,6 +121,9 @@ export interface ROI {
   period: string;
   lastUpdated: number;
 }
+
+// Re-export component cost types
+export * from './componentCost';
 
 export interface DashboardData {
   roi: ROI | null;

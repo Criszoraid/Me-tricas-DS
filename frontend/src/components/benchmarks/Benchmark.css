@@ -1,0 +1,13 @@
+.bm-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:1rem; margin-top:1rem; }
+.bm-card { background:#fff; border:1px solid #e5e7eb; border-radius:.75rem; padding:1rem; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+.bm-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem; }
+.bm-title { margin:0; font-size:1rem; font-weight:600; color:#111827; }
+.bm-status { font-weight:700; }
+.bm-values { display:flex; align-items:center; gap:1rem; }
+.bm-label { font-size:.75rem; color:#6b7280; }
+.bm-number { font-family:'Courier New', monospace; font-weight:700; }
+.bm-diff { margin-left:auto; font-weight:700; }
+.bm-foot { margin-top:.5rem; font-size:.75rem; color:#9ca3af; }
+
+
+

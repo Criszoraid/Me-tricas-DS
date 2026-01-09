@@ -156,6 +156,13 @@
   gap: 1.25rem;
 }
 
+/* Chart Cards Grid */
+.chart-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
 /* Charts Grid */
 .charts-grid {
   display: grid;
@@ -295,7 +302,8 @@
     gap: 1rem;
   }
 
-  .kpi-cards-grid {
+  .kpi-cards-grid,
+  .chart-cards-grid {
     grid-template-columns: 1fr;
   }
 

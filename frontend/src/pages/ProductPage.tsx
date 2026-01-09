@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { DashboardData } from '../types';
 import { Line } from 'react-chartjs-2';
 import {
@@ -34,13 +34,62 @@ ChartJS.register(
 type DataSource = 'manual' | 'file';
 
 export default function ProductPage({ data, onRefresh }: { data: DashboardData; onRefresh: () => void }) {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [dataSource, setDataSource] = useState<DataSource>('file');
   const [showEditModal, setShowEditModal] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  
+  // Leer filtros de URL para deep linking
+  const metricFilter = searchParams.get('metric'); // 'adoption', 'accessibility', etc.
+  
   const latestDesign = data.designMetrics.length > 0
     ? data.designMetrics[data.designMetrics.length - 1]
     : null;
+
+  // Scroll automático a la sección correspondiente si viene de un ChartCard
+  useEffect(() => {
+    if (metricFilter) {
+      setTimeout(() => {
+        const element = document.getElementById(`metric-${metricFilter}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [metricFilter]);
+
+
+  // Component usage data (sample)
+  const componentUsage = [
+    { component: 'Button', instances: 1247, products: 23, detached: 3 },
+    { component: 'Input', instances: 892, products: 21, detached: 5 },
+    { component: 'Card', instances: 734, products: 19, detached: 2 },
+    { component: 'Modal', instances: 456, products: 18, detached: 8 },
+    { component: 'Dropdown', instances: 389, products: 16, detached: 4 },
+    { component: 'Tabs', instances: 234, products: 14, detached: 2 },
+  ];
+
+  // Products by adoption (sample)
+  const productsByAdoption = [
+    { name: 'Analytics Dashboard', adoption: 98 },
+    { name: 'Marketing Site', adoption: 89 },
+    { name: 'Admin Panel', adoption: 85 },
+    { name: 'Customer Portal', adoption: 76 },
+    { name: 'Mobile App', adoption: 62 },
+    { name: 'Internal Tools', adoption: 45 },
+  ];
+
+  // Top deviations (sample)
+  const topDeviations = [
+    { file: 'Marketing Dashboard', component: 'Custom spacing', instances: 18 },
+    { file: 'Admin Panel', component: 'Modified Button colors', instances: 12 },
+    { file: 'Customer Portal', component: 'Custom Modal sizes', instances: 8 },
+    { file: 'Analytics Dashboard', component: 'Non-standard icons', instances: 6 },
+  ];
+
+  // Handle CSV Export
 
   const handleEditSave = async (formData: any) => {
     await api.addManualMetrics({
@@ -109,46 +158,19 @@ export default function ProductPage({ data, onRefresh }: { data: DashboardData; 
     },
   };
 
-  // Component usage data (sample)
-  const componentUsage = [
-    { component: 'Button', instances: 1247, products: 23, detached: 3 },
-    { component: 'Input', instances: 892, products: 21, detached: 5 },
-    { component: 'Card', instances: 734, products: 19, detached: 2 },
-    { component: 'Modal', instances: 456, products: 18, detached: 8 },
-    { component: 'Dropdown', instances: 389, products: 16, detached: 4 },
-    { component: 'Tabs', instances: 234, products: 14, detached: 2 },
-  ];
-
-  // Products by adoption (sample)
-  const productsByAdoption = [
-    { name: 'Analytics Dashboard', adoption: 98 },
-    { name: 'Marketing Site', adoption: 89 },
-    { name: 'Admin Panel', adoption: 85 },
-    { name: 'Customer Portal', adoption: 76 },
-    { name: 'Mobile App', adoption: 62 },
-    { name: 'Internal Tools', adoption: 45 },
-  ];
-
-  // Top deviations (sample)
-  const topDeviations = [
-    { file: 'Marketing Dashboard', component: 'Custom spacing', instances: 18 },
-    { file: 'Admin Panel', component: 'Modified Button colors', instances: 12 },
-    { file: 'Customer Portal', component: 'Custom Modal sizes', instances: 8 },
-    { file: 'Analytics Dashboard', component: 'Non-standard icons', instances: 6 },
-  ];
-
   return (
     <div className="page-layout">
       <header className="page-header">
         <div className="header-nav">
           <Link to="/" className="back-link">← Resumen</Link>
           <nav className="page-nav">
-            <Link to="/" className="nav-link">📊 Dashboard</Link>
-            <Link to="/producto" className="nav-link active">📦 Métricas de Producto</Link>
-            <Link to="/desarrollo" className="nav-link">💻 Desarrollo</Link>
-            <Link to="/kpis" className="nav-link">🎯 KPIs</Link>
-            <Link to="/okrs" className="nav-link">✅ OKRs</Link>
-            <Link to="/roi" className="nav-link">💰 ROI</Link>
+            <Link to="/" className="nav-link">Dashboard</Link>
+            <Link to="/producto" className="nav-link active">Producto</Link>
+            <Link to="/desarrollo" className="nav-link">Desarrollo</Link>
+            <Link to="/kpis" className="nav-link">KPIs</Link>
+            <Link to="/okrs" className="nav-link">OKRs</Link>
+            <Link to="/roi" className="nav-link">ROI</Link>
+            <Link to="/data-sources" className="nav-link">Fuentes</Link>
           </nav>
         </div>
         <div className="page-header-main">
@@ -157,23 +179,17 @@ export default function ProductPage({ data, onRefresh }: { data: DashboardData; 
             <p className="page-subtitle">Adopción y uso del sistema de diseño en Figma</p>
           </div>
 
-          {/* Data Source Toggle */}
-          <div className="data-source-toggle">
-            <button
-              onClick={() => setDataSource('file')}
-              className={`toggle-button ${dataSource === 'file' ? 'active' : ''}`}
-            >
-              📄 Desde archivo
-            </button>
-            <button
-              onClick={() => setDataSource('manual')}
-              className={`toggle-button ${dataSource === 'manual' ? 'active' : ''}`}
-            >
-              ✏️ Entrada manual
-            </button>
-            {dataSource === 'file' && (
-              <FileUpload type="design" onSuccess={handleUploadSuccess} onError={handleUploadError} />
-            )}
+              <div className="page-header-actions">
+                {/* Data Source Toggle */}
+                <div className="data-source-toggle">
+                  <button
+                    onClick={() => setDataSource('manual')}
+                    className={`toggle-button ${dataSource === 'manual' ? 'active' : ''}`}
+                  >
+                    ✏️ Entrada manual
+                  </button>
+                  <FileUpload type="design" onSuccess={handleUploadSuccess} onError={handleUploadError} />
+                </div>
           </div>
           {uploadError && (
             <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '0.375rem', fontSize: '0.875rem' }}>
@@ -289,7 +305,6 @@ export default function ProductPage({ data, onRefresh }: { data: DashboardData; 
                 <h3 className="table-title">Uso de Componentes</h3>
                 <p className="table-subtitle">Desglose por tipo de componente</p>
               </div>
-              <button className="export-button">📤 Exportar CSV</button>
             </div>
             <div className="table-wrapper">
               <table className="product-table">
@@ -307,7 +322,12 @@ export default function ProductPage({ data, onRefresh }: { data: DashboardData; 
                     const deviationRate = ((item.detached / item.instances) * 100).toFixed(1);
                     const isLowDeviation = parseFloat(deviationRate) < 1;
                     return (
-                      <tr key={item.component}>
+                      <tr 
+                        key={item.component}
+                        onClick={() => navigate(`/components/${item.component}`)}
+                        className="table-row-clickable"
+                        style={{ cursor: 'pointer' }}
+                      >
                         <td className="font-semibold">{item.component}</td>
                         <td className="text-right font-mono">{item.instances.toLocaleString()}</td>
                         <td className="text-right font-mono">{item.products}</td>

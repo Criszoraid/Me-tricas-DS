@@ -1,0 +1,30 @@
+.pattern-efficiency-container {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+}
+.pattern-efficiency-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.pe-title { font-size: 1.25rem; font-weight: 600; color: #111827; margin: 0; }
+.btn-add { background:#2563eb;color:#fff;border:none;border-radius:.375rem;padding:.5rem 1rem;cursor:pointer }
+.pe-table-wrapper { overflow-x: auto; }
+.pe-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+.pe-table thead { background: #f9fafb; }
+.pe-table th { text-align:left; padding:.75rem; border-bottom:2px solid #e5e7eb; color:#374151; }
+.pe-table td { padding:.75rem; border-bottom:1px solid #e5e7eb; }
+.pe-table tbody tr:hover { background:#f9fafb; }
+.pe-input { width:100%; padding:.25rem .5rem; border:1px solid #d1d5db; border-radius:.25rem; }
+.pe-actions { display:flex; gap:.5rem; }
+.btn-edit,.btn-delete,.btn-save,.btn-cancel { border:none; border-radius:.25rem; padding:.25rem .5rem; cursor:pointer; }
+.btn-save { background:#059669; color:#fff; }
+.btn-cancel { background:#dc2626; color:#fff; }
+.font-mono { font-family: 'Courier New', monospace; }
+
+
+

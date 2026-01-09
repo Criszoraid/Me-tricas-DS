@@ -4,6 +4,41 @@ import html2canvas from 'html2canvas';
 import { DashboardData } from '../types';
 
 /**
+ * Export data to CSV format
+ */
+export function exportToCSV(data: any[][], filename: string = 'export.csv') {
+  // Convert data array to CSV string
+  const csvContent = data
+    .map(row =>
+      row
+        .map(cell => {
+          // Escape cells containing commas, quotes, or newlines
+          const cellStr = String(cell || '');
+          if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+            return `"${cellStr.replace(/"/g, '""')}"`;
+          }
+          return cellStr;
+        })
+        .join(',')
+    )
+    .join('\n');
+
+  // Add BOM for UTF-8 Excel compatibility
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+
+  // Create download link
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+/**
  * Export dashboard data to Excel
  */
 export function exportToExcel(data: DashboardData, filename: string = 'metricas-ds.xlsx') {

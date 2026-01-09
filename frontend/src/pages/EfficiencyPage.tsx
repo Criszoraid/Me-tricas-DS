@@ -1,10 +1,19 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardData } from '../types';
 import Tooltip from '../components/Tooltip';
+import EditOKRModal from '../components/EditOKRModal';
+import FileUpload from '../components/FileUpload';
+import { api } from '../services/api';
 import './PageLayout.css';
 import './OKRPage.css';
 
-export default function EfficiencyPage({ data }: { data: DashboardData; onRefresh: () => void }) {
+export default function EfficiencyPage({ data, onRefresh }: { data: DashboardData; onRefresh: () => void }) {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedOKR, setSelectedOKR] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+
   const okrs = data.okrs.length > 0 ? data.okrs : [
     {
       id: 'okr-sample-1',
@@ -73,24 +82,85 @@ export default function EfficiencyPage({ data }: { data: DashboardData; onRefres
     },
   ];
 
+  const handleEditOKR = (okrId: string) => {
+    setSelectedOKR(okrId);
+    setShowEditModal(true);
+  };
+
+  const handleSaveOKR = async (okrData: any) => {
+    try {
+      if (selectedOKR) {
+        await api.updateOKR(selectedOKR, okrData);
+      } else {
+        await api.createOKR(okrData);
+      }
+      onRefresh();
+      setShowEditModal(false);
+      setSelectedOKR(null);
+    } catch (error: any) {
+      console.error('Error guardando OKR:', error);
+    }
+  };
+
+  const handleUploadSuccess = () => {
+    setUploadSuccess(true);
+    setUploadError(null);
+    setTimeout(() => {
+      setUploadSuccess(false);
+      onRefresh();
+    }, 2000);
+  };
+
+  const handleUploadError = (error: string) => {
+    setUploadError(error);
+    setUploadSuccess(false);
+  };
+
   return (
     <div className="page-layout">
       <header className="page-header">
         <div className="header-nav">
           <Link to="/" className="back-link">← Resumen</Link>
           <nav className="page-nav">
-            <Link to="/" className="nav-link">📊 Dashboard</Link>
-            <Link to="/producto" className="nav-link">📦 Métricas de Producto</Link>
-            <Link to="/desarrollo" className="nav-link">💻 Desarrollo</Link>
-            <Link to="/kpis" className="nav-link">🎯 KPIs</Link>
-            <Link to="/okrs" className="nav-link active">✅ OKRs</Link>
-            <Link to="/roi" className="nav-link">💰 ROI</Link>
+            <Link to="/" className="nav-link">Dashboard</Link>
+            <Link to="/producto" className="nav-link">Producto</Link>
+            <Link to="/desarrollo" className="nav-link">Desarrollo</Link>
+            <Link to="/kpis" className="nav-link">KPIs</Link>
+            <Link to="/okrs" className="nav-link active">OKRs</Link>
+            <Link to="/roi" className="nav-link">ROI</Link>
+            <Link to="/data-sources" className="nav-link">Fuentes</Link>
           </nav>
         </div>
-        <div>
-          <h1>Objetivos y Resultados Clave</h1>
-          <p className="page-subtitle">Objetivos estratégicos y resultados medibles</p>
+        <div className="page-header-main">
+          <div>
+            <h1>Objetivos y Resultados Clave</h1>
+            <p className="page-subtitle">Objetivos estratégicos y resultados medibles</p>
+          </div>
+          <div className="page-header-actions">
+            <div className="data-source-toggle">
+              <button
+                onClick={() => {
+                  setSelectedOKR(null);
+                  setShowEditModal(true);
+                }}
+                className="toggle-button active"
+              >
+                ✏️ Entrada manual
+              </button>
+              <FileUpload type="okr" onSuccess={handleUploadSuccess} onError={handleUploadError} />
+            </div>
+          </div>
         </div>
+        {uploadError && (
+          <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#fee2e2', color: '#991b1b', borderRadius: '0.375rem', fontSize: '0.875rem' }}>
+            {uploadError}
+          </div>
+        )}
+        {uploadSuccess && (
+          <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#d1fae5', color: '#065f46', borderRadius: '0.375rem', fontSize: '0.875rem' }}>
+            ✅ Archivo importado correctamente
+          </div>
+        )}
       </header>
 
       <main className="page-content okr-page-content">
@@ -106,7 +176,7 @@ export default function EfficiencyPage({ data }: { data: DashboardData; onRefres
                     <span className="okr-progress-value">{okr.progress.toFixed(0)}%</span>
                   </div>
                 </div>
-                <button className="okr-edit-button" aria-label="Edit OKR">✏️</button>
+                <button className="okr-edit-button" onClick={() => handleEditOKR(okr.id)} aria-label="Edit OKR">✏️</button>
               </div>
 
               <div className="okr-key-results">
@@ -161,6 +231,17 @@ export default function EfficiencyPage({ data }: { data: DashboardData; onRefres
           </div>
         </section>
       </main>
+
+      {showEditModal && (
+        <EditOKRModal
+          okr={selectedOKR ? okrs.find(o => o.id === selectedOKR) || null : null}
+          onSave={handleSaveOKR}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedOKR(null);
+          }}
+        />
+      )}
     </div>
   );
 }

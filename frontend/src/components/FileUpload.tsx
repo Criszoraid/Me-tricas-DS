@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import './FileUpload.css';
 
 interface FileUploadProps {
-  type: 'design' | 'development';
+  type: 'design' | 'development' | 'kpi' | 'okr';
   onSuccess?: () => void;
   onError?: (error: string) => void;
 }
@@ -30,11 +30,19 @@ export default function FileUpload({ type, onSuccess, onError }: FileUploadProps
     try {
       const fileContent = await file.text();
       
-      await api.uploadMetricsFile({
-        type,
-        fileContent,
-        fileName: file.name,
-      });
+      if (type === 'kpi' || type === 'okr') {
+        await api.uploadKPIOrOKRFile({
+          type,
+          fileContent,
+          fileName: file.name,
+        });
+      } else {
+        await api.uploadMetricsFile({
+          type,
+          fileContent,
+          fileName: file.name,
+        });
+      }
 
       onSuccess?.();
       
@@ -60,7 +68,7 @@ export default function FileUpload({ type, onSuccess, onError }: FileUploadProps
       <input
         ref={fileInputRef}
         type="file"
-        accept=".json,.csv"
+        accept=".json,.csv,.xlsx,.xls"
         onChange={handleFileChange}
         className="file-upload-input"
         disabled={isUploading}

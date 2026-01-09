@@ -118,3 +118,4 @@ export function TrendChart({ data, dataKey, color, height = 240, stacked = false
   );
 }
 
+

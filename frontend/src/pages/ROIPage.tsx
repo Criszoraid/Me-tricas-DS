@@ -1,15 +1,122 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { DashboardData, ROI } from '../types';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { DashboardData, ROI, ROIBaseline } from '../types';
 import Tooltip from '../components/Tooltip';
+import ROIComparison from '../components/ROIComparison';
+import ROIScenarios from '../components/ROIScenarios';
+import BreakEvenChart from '../components/roi/BreakEvenChart';
+import PatternEfficiencyTable from '../components/efficiency/PatternEfficiencyTable';
+import PatternEfficiencySummary from '../components/efficiency/PatternEfficiencySummary';
+import BenchmarkComparison from '../components/benchmarks/BenchmarkComparison';
+import { industryBenchmarks } from '../utils/benchmarks';
+import { Pattern } from '../utils/calculations/patternEfficiency';
+import ComponentCostTable from '../components/roi/ComponentCostTable';
+import ComponentCostSummary from '../components/roi/ComponentCostSummary';
+import { calculateBreakEven } from '../utils/calculations/breakEven';
+import { calculateComponentCostSummary } from '../utils/calculations/componentCost';
+import { ComponentCost, ComponentCostRates } from '../types/componentCost';
 import './PageLayout.css';
 import './ROIPage.css';
 
 export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRefresh: () => void }) {
+  const [searchParams] = useSearchParams();
   const roi = data.roi;
+  
+  // Leer filtros de URL para deep linking
+  const sectionFilter = searchParams.get('section'); // 'benefits', 'costs', 'compare'
+  
   const [isEditing, setIsEditing] = useState(false);
   const [editedCosts, setEditedCosts] = useState(roi?.costs || null);
   const [editedBenefits, setEditedBenefits] = useState(roi?.benefits || null);
+  const [roiData, setRoiData] = useState<ROI | null>(roi);
+  const [patterns, setPatterns] = useState<Pattern[]>([]);
+  const [componentCosts, setComponentCosts] = useState<ComponentCost[]>([]);
+
+  // Scroll automático a la sección correspondiente si viene de un ChartCard
+  useEffect(() => {
+    if (sectionFilter) {
+      setTimeout(() => {
+        const element = document.getElementById(`roi-section-${sectionFilter}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [sectionFilter]);
+
+  // Sincronizar roiData cuando cambia data.roi
+  useEffect(() => {
+    if (roi) {
+      setRoiData(roi);
+      setEditedCosts(roi.costs);
+      setEditedBenefits(roi.benefits);
+    }
+  }, [roi]);
+
+  // Datos de ejemplo para Pattern Efficiency
+  useEffect(() => {
+    if (patterns.length === 0) {
+      setPatterns([
+        { id: 'search', name: 'Buscar', designEffort: 20, devEffort: 50, maintenanceEffort: 10, designImportTime: 1, devImportTime: 2, uisUsing: 30 },
+        { id: 'pagination', name: 'Paginación', designEffort: 12, devEffort: 36, maintenanceEffort: 6, designImportTime: .5, devImportTime: 1, uisUsing: 22 },
+        { id: 'form', name: 'Formulario', designEffort: 28, devEffort: 72, maintenanceEffort: 12, designImportTime: 2, devImportTime: 3, uisUsing: 15 },
+      ]);
+    }
+  }, [patterns.length]);
+
+  // Inicializar componentes de ejemplo si no hay datos
+  useEffect(() => {
+    if (componentCosts.length === 0) {
+      const sampleComponents: ComponentCost[] = [
+        {
+          id: 'button',
+          name: 'Button',
+          complexity: 'simple',
+          designHours: 4,
+          devHours: 12,
+          qaHours: 2,
+          docsHours: 2,
+          maintenanceHours: 1,
+          numberOfUses: 1247,
+          totalCreationHours: 0,
+          totalCreationCost: 0,
+          monthlyCost: 0,
+          costPerUse: 0,
+        },
+        {
+          id: 'input',
+          name: 'Input',
+          complexity: 'medium',
+          designHours: 8,
+          devHours: 24,
+          qaHours: 4,
+          docsHours: 4,
+          maintenanceHours: 2,
+          numberOfUses: 892,
+          totalCreationHours: 0,
+          totalCreationCost: 0,
+          monthlyCost: 0,
+          costPerUse: 0,
+        },
+        {
+          id: 'table',
+          name: 'Table',
+          complexity: 'complex',
+          designHours: 16,
+          devHours: 48,
+          qaHours: 8,
+          docsHours: 8,
+          maintenanceHours: 4,
+          numberOfUses: 234,
+          totalCreationHours: 0,
+          totalCreationCost: 0,
+          monthlyCost: 0,
+          costPerUse: 0,
+        },
+      ];
+      setComponentCosts(sampleComponents);
+    }
+  }, [componentCosts.length]);
 
   if (!roi) {
     return (
@@ -27,8 +134,9 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
     );
   }
 
-  const costs = editedCosts || roi.costs;
-  const benefits = editedBenefits || roi.benefits;
+  const currentROI = roiData || roi;
+  const costs = editedCosts || currentROI.costs;
+  const benefits = editedBenefits || currentROI.benefits;
   const annualInvestment = costs.total;
   const annualValue = benefits.total;
   const netBenefit = annualValue - annualInvestment;
@@ -39,6 +147,24 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
     low: calculatedROI * 0.85,
     high: calculatedROI * 1.15,
   };
+
+  // KPI de adopción (si existe) para Benchmarks
+  const adoptionKPI = data.kpis.find(k => k.calculationMethod === 'component_adoption');
+  const adoptionValue = adoptionKPI ? Math.round(adoptionKPI.currentValue) : 73;
+  // Ganancias de eficiencia aproximadas desde beneficios (horas/mes → % aprox)
+  const efficiencyGainDev = Math.min(100, Math.round((benefits.developmentTimeSaved / 200) * 100)); // heurística
+  const efficiencyGainDesign = Math.min(100, Math.round((benefits.designTimeSaved / 160) * 100)); // heurística
+
+  // Calcular rates para coste de componentes
+  const componentRates: ComponentCostRates = {
+    design: costs ? costs.averageSalary / 2080 : 38.46, // €/hora
+    dev: costs ? (costs.averageSalary * 1.17) / 2080 : 45, // €/hora
+    qa: costs ? (costs.averageSalary * 0.9) / 2080 : 34.62, // €/hora
+  };
+
+  const componentCostSummary = componentCosts.length > 0
+    ? calculateComponentCostSummary(componentCosts, componentRates)
+    : null;
 
   const handleCostChange = (field: keyof typeof costs, value: number) => {
     if (!editedCosts) return;
@@ -62,9 +188,26 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
     setEditedBenefits(updated);
   };
 
+  const handleBaselineUpdate = async (baseline: ROIBaseline) => {
+    if (!roiData) return;
+    const updatedROI: ROI = {
+      ...roiData,
+      baseline,
+    };
+    setRoiData(updatedROI);
+    // TODO: Guardar baseline en backend cuando tengamos endpoint
+    console.log('Baseline actualizado:', baseline);
+  };
+
   const handleSave = async () => {
-    if (!editedCosts || !editedBenefits) return;
+    if (!editedCosts || !editedBenefits || !roiData) return;
     // Aquí se podría hacer una llamada a la API para guardar
+    const updatedROI: ROI = {
+      ...roiData,
+      costs: editedCosts,
+      benefits: editedBenefits,
+    };
+    setRoiData(updatedROI);
     setIsEditing(false);
     onRefresh();
   };
@@ -76,10 +219,12 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
           <Link to="/" className="back-link">← Dashboard</Link>
           <nav className="page-nav">
             <Link to="/" className="nav-link">Dashboard</Link>
-            <Link to="/producto" className="nav-link">Métricas</Link>
+            <Link to="/producto" className="nav-link">Producto</Link>
+            <Link to="/desarrollo" className="nav-link">Desarrollo</Link>
             <Link to="/kpis" className="nav-link">KPIs</Link>
             <Link to="/okrs" className="nav-link">OKRs</Link>
             <Link to="/roi" className="nav-link active">ROI</Link>
+            <Link to="/data-sources" className="nav-link">Fuentes</Link>
           </nav>
         </div>
         <h1>Retorno de Inversión</h1>
@@ -95,6 +240,65 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
           </div>
           <div className="roi-page-confidence">
             Rango de confianza: {confidenceRange.low.toFixed(0)}% - {confidenceRange.high.toFixed(0)}%
+          </div>
+        </section>
+
+        {/* Break-even Point */}
+        {costs && benefits && (
+          <section id="roi-section-break-even" className="roi-breakdown-section">
+            <BreakEvenChart
+              breakEvenData={calculateBreakEven(costs, benefits, 60)}
+            />
+          </section>
+        )}
+
+        {/* Coste por Componente ya insertado más arriba */}
+
+        {/* Pattern Efficiency (IBM) */}
+        <section id="roi-section-pattern-efficiency" className="roi-breakdown-section">
+          <div className="section-header">
+            <h2 className="section-title">Eficiencia por Patrones</h2>
+            <Tooltip content="Cálculo de ahorro real usando la fórmula IBM: sin DS = esfuerzo×UIs; con DS = esfuerzo + import×UIs">
+              <span className="section-info-icon">ℹ️</span>
+            </Tooltip>
+          </div>
+          <PatternEfficiencySummary patterns={patterns} hourlyRate={benefits.hourlyRate} />
+          <PatternEfficiencyTable patterns={patterns} onUpdate={setPatterns} />
+        </section>
+
+        {/* Benchmarks de Industria */}
+        <section id="roi-section-benchmarks" className="roi-breakdown-section">
+          <div className="section-header">
+            <h2 className="section-title">Benchmarks de la Industria</h2>
+            <Tooltip content="Comparativa frente a estudios publicados de la industria (adopción, eficiencia y ROI)">
+              <span className="section-info-icon">ℹ️</span>
+            </Tooltip>
+          </div>
+          <div className="bm-grid">
+            <BenchmarkComparison
+              metric="Adopción DS"
+              yourValue={adoptionValue}
+              unit="%"
+              benchmark={industryBenchmarks.adoptionRate}
+            />
+            <BenchmarkComparison
+              metric="Eficiencia Diseño"
+              yourValue={efficiencyGainDesign}
+              unit="%"
+              benchmark={industryBenchmarks.designEfficiencyGain}
+            />
+            <BenchmarkComparison
+              metric="Eficiencia Desarrollo"
+              yourValue={efficiencyGainDev}
+              unit="%"
+              benchmark={industryBenchmarks.devEfficiencyGain}
+            />
+            <BenchmarkComparison
+              metric="ROI (Año 3)"
+              yourValue={Math.round(calculatedROI)}
+              unit="%"
+              benchmark={industryBenchmarks.roiYear3}
+            />
           </div>
         </section>
 
@@ -121,7 +325,7 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
         </section>
 
         {/* Investment Costs Breakdown */}
-        <section className="roi-breakdown-section">
+        <section id="roi-section-costs" className="roi-breakdown-section">
           <div className="section-header">
             <h2 className="section-title">Costes de Inversión</h2>
             <button 
@@ -189,8 +393,8 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
           </div>
         </section>
 
-        {/* Value Generated Breakdown */}
-        <section className="roi-breakdown-section">
+            {/* Value Generated Breakdown */}
+            <section id="roi-section-benefits" className="roi-breakdown-section">
           <h2 className="section-title">
             Valor Generado
             <Tooltip content="Calculado a partir del tiempo ahorrado, reutilización de componentes y mejoras de calidad">
@@ -259,6 +463,51 @@ export default function ROIPage({ data, onRefresh }: { data: DashboardData; onRe
             seguimiento del tiempo y la atribución. El ROI real probablemente cae dentro de este rango.
           </p>
         </section>
+
+        {/* Break-even Point */}
+        {costs && benefits && (
+          <section id="roi-section-break-even" className="roi-breakdown-section">
+            <BreakEvenChart
+              breakEvenData={calculateBreakEven(costs, benefits, 60)}
+            />
+          </section>
+        )}
+
+        {/* Coste por Componente */}
+        <section id="roi-section-component-cost" className="roi-breakdown-section">
+          <div className="section-header">
+            <h2 className="section-title">Coste por Componente</h2>
+            <Tooltip content="Calcula el coste de crear y mantener cada componente del Design System">
+              <span className="section-info-icon">ℹ️</span>
+            </Tooltip>
+          </div>
+          
+          {componentCostSummary && (
+            <ComponentCostSummary summary={componentCostSummary} />
+          )}
+          
+          <ComponentCostTable
+            components={componentCosts}
+            rates={componentRates}
+            onUpdate={setComponentCosts}
+          />
+        </section>
+
+        {/* Escenarios ROI */}
+        <section className="roi-scenarios-wrapper">
+          <ROIScenarios 
+            costs={costs}
+            benefits={benefits}
+          />
+        </section>
+
+        {/* Comparativa With DS vs Baseline */}
+        {roi && (
+          <ROIComparison
+            roi={roiData || roi}
+            onBaselineUpdate={handleBaselineUpdate}
+          />
+        )}
       </main>
     </div>
   );

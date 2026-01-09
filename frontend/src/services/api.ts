@@ -7,6 +7,7 @@ import {
   DesignMetrics,
   DevelopmentMetrics,
 } from '../types';
+import { getMockDashboardData } from '../utils/mockData';
 
 const apiClient = axios.create({
   baseURL: '/api',
@@ -15,17 +16,43 @@ const apiClient = axios.create({
   },
 });
 
+// Detectar si estamos en GitHub Pages (sin backend)
+const isGitHubPages = window.location.hostname.includes('github.io') || 
+                      window.location.hostname.includes('github.com');
+
 export const api = {
   // Dashboard
   async getDashboard(): Promise<DashboardData> {
-    const response = await apiClient.get<DashboardData>('/dashboard');
-    return response.data;
+    // En GitHub Pages, usar datos mock
+    if (isGitHubPages) {
+      console.log('🌐 Modo GitHub Pages: usando datos mock');
+      return getMockDashboardData();
+    }
+    
+    try {
+      const response = await apiClient.get<DashboardData>('/dashboard');
+      return response.data;
+    } catch (error) {
+      console.warn('⚠️ Error al conectar con el backend, usando datos mock:', error);
+      return getMockDashboardData();
+    }
   },
 
   // ROI
   async getROI(): Promise<{ roi: ROI | null }> {
-    const response = await apiClient.get<{ roi: ROI | null }>('/roi');
-    return response.data;
+    if (isGitHubPages) {
+      const mockData = getMockDashboardData();
+      return { roi: mockData.roi };
+    }
+    
+    try {
+      const response = await apiClient.get<{ roi: ROI | null }>('/roi');
+      return response.data;
+    } catch (error) {
+      console.warn('⚠️ Error al obtener ROI, usando datos mock:', error);
+      const mockData = getMockDashboardData();
+      return { roi: mockData.roi };
+    }
   },
 
   async calculateROI(data: {
@@ -40,14 +67,46 @@ export const api = {
 
   // KPIs
   async getKPIs(): Promise<{ kpis: KPI[] }> {
-    const response = await apiClient.get<{ kpis: KPI[] }>('/kpis');
+    if (isGitHubPages) {
+      const mockData = getMockDashboardData();
+      return { kpis: mockData.kpis };
+    }
+    
+    try {
+      const response = await apiClient.get<{ kpis: KPI[] }>('/kpis');
+      return response.data;
+    } catch (error) {
+      console.warn('⚠️ Error al obtener KPIs, usando datos mock:', error);
+      const mockData = getMockDashboardData();
+      return { kpis: mockData.kpis };
+    }
+  },
+
+  async updateKPI(id: string, data: Partial<KPI>): Promise<{ kpi: KPI; message: string }> {
+    const response = await apiClient.put<{ kpi: KPI; message: string }>(`/kpis/${id}`, data);
+    return response.data;
+  },
+
+  async createKPI(data: Partial<KPI>): Promise<{ kpi: KPI; message: string }> {
+    const response = await apiClient.post<{ kpi: KPI; message: string }>('/kpis', data);
     return response.data;
   },
 
   // OKRs
   async getOKRs(): Promise<{ okrs: Objective[] }> {
-    const response = await apiClient.get<{ okrs: Objective[] }>('/okrs');
-    return response.data;
+    if (isGitHubPages) {
+      const mockData = getMockDashboardData();
+      return { okrs: mockData.okrs };
+    }
+    
+    try {
+      const response = await apiClient.get<{ okrs: Objective[] }>('/okrs');
+      return response.data;
+    } catch (error) {
+      console.warn('⚠️ Error al obtener OKRs, usando datos mock:', error);
+      const mockData = getMockDashboardData();
+      return { okrs: mockData.okrs };
+    }
   },
 
   async createOKR(data: {
@@ -109,6 +168,18 @@ export const api = {
   }): Promise<{ metrics: DesignMetrics | DevelopmentMetrics; message: string }> {
     const response = await apiClient.post<{ metrics: DesignMetrics | DevelopmentMetrics; message: string }>(
       '/metrics/upload',
+      data
+    );
+    return response.data;
+  },
+
+  async uploadKPIOrOKRFile(data: {
+    type: 'kpi' | 'okr';
+    fileContent: string;
+    fileName: string;
+  }): Promise<{ message: string }> {
+    const response = await apiClient.post<{ message: string }>(
+      '/kpis-okrs/upload',
       data
     );
     return response.data;
