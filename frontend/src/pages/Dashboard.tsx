@@ -5,7 +5,7 @@ import ChartCard from '../components/ChartCard';
 import { ROIIndicator } from '../components/ROIIndicator';
 import { TrendChart } from '../components/TrendChart';
 import HealthScoreCard from '../components/dashboard/HealthScoreCard';
-import { calculateHealthScore } from '../utils/calculations/healthScore';
+// import { calculateHealthScore } from '../utils/calculations/healthScore'; // Usado dentro de HealthScoreCard
 import './Dashboard.css';
 
 interface DashboardProps {
@@ -19,13 +19,13 @@ export default function Dashboard({ data }: DashboardProps) {
     ? data.designMetrics[data.designMetrics.length - 1].adoptionPercentage
     : 73;
 
-  const componentReuse = data.developmentMetrics.length > 0
-    ? data.developmentMetrics[data.developmentMetrics.length - 1].reposUsingDS > 0
-      ? Math.round((data.developmentMetrics[data.developmentMetrics.length - 1].reposUsingDS / 
-          (data.developmentMetrics[data.developmentMetrics.length - 1].reposUsingDS + 
-           data.developmentMetrics[data.developmentMetrics.length - 1].customComponentsCount)) * 100)
-      : 89
-    : 89;
+  // const componentReuse = data.developmentMetrics.length > 0
+  //   ? data.developmentMetrics[data.developmentMetrics.length - 1].reposUsingDS > 0
+  //     ? Math.round((data.developmentMetrics[data.developmentMetrics.length - 1].reposUsingDS / 
+  //         (data.developmentMetrics[data.developmentMetrics.length - 1].reposUsingDS + 
+  //          data.developmentMetrics[data.developmentMetrics.length - 1].customComponentsCount)) * 100)
+  //     : 89
+  //   : 89; // No usado actualmente
 
   // const deviations = data.designMetrics.length > 0
   //   ? data.designMetrics[data.designMetrics.length - 1].detachedComponents
