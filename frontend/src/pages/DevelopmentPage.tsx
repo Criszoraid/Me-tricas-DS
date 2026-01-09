@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardData } from '../types';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +15,7 @@ import {
   Filler,
 } from 'chart.js';
 import Tooltip from '../components/Tooltip';
-import FileUpload from '../components/FileUpload';
+// import FileUpload from '../components/FileUpload'; // No usado actualmente
 import EditMetricModal from '../components/EditMetricModal';
 import NpmStatsCard from '../components/development/NpmStatsCard';
 import { api } from '../services/api';
@@ -39,9 +39,9 @@ type DataSource = 'manual' | 'file';
 export default function DevelopmentPage({ data, onRefresh }: { data: DashboardData; onRefresh: () => void }) {
   const [dataSource, setDataSource] = useState<DataSource>('file');
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editField, setEditField] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
+  // const [editField, setEditField] = useState<string | null>(null); // No usado actualmente
+  // const [uploadError, setUploadError] = useState<string | null>(null); // No usado actualmente
+  // const [uploadSuccess, setUploadSuccess] = useState(false); // No usado actualmente
   const latestDev = data.developmentMetrics.length > 0
     ? data.developmentMetrics[data.developmentMetrics.length - 1]
     : null;
@@ -54,19 +54,19 @@ export default function DevelopmentPage({ data, onRefresh }: { data: DashboardDa
     onRefresh();
   };
 
-  const handleUploadSuccess = () => {
-    setUploadSuccess(true);
-    setUploadError(null);
-    setTimeout(() => {
-      setUploadSuccess(false);
-      onRefresh();
-    }, 2000);
-  };
+  // const handleUploadSuccess = () => {
+  //   setUploadSuccess(true);
+  //   setUploadError(null);
+  //   setTimeout(() => {
+  //     setUploadSuccess(false);
+  //     onRefresh();
+  //   }, 2000);
+  // };
 
-  const handleUploadError = (error: string) => {
-    setUploadError(error);
-    setUploadSuccess(false);
-  };
+  // const handleUploadError = (error: string) => {
+  //   setUploadError(error);
+  //   setUploadSuccess(false);
+  // };
 
 
   // Calcular métricas principales

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ComponentCost, ComponentCostRates, COMPLEXITY_BENCHMARKS } from '../../types/componentCost';
+import { ComponentCost, ComponentCostRates } from '../../types/componentCost';
 import { calculateComponentCost } from '../../utils/calculations/componentCost';
 import './ComponentCostTable.css';
 

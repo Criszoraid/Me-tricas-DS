@@ -1,7 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { DashboardData } from '../types';
-import { ArrowUp, TrendingUp, Package, Clock, AlertTriangle, Accessibility } from 'lucide-react';
-import { MetricCard } from '../components/MetricCard';
+import { ArrowUp, TrendingUp, Package, Clock, Accessibility } from 'lucide-react';
 import ChartCard from '../components/ChartCard';
 import { ROIIndicator } from '../components/ROIIndicator';
 import { TrendChart } from '../components/TrendChart';
@@ -15,7 +14,6 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ data }: DashboardProps) {
-  const navigate = useNavigate();
   // Calcular métricas
   const adoptionRate = data.designMetrics.length > 0
     ? data.designMetrics[data.designMetrics.length - 1].adoptionPercentage
@@ -29,9 +27,9 @@ export default function Dashboard({ data }: DashboardProps) {
       : 89
     : 89;
 
-  const deviations = data.designMetrics.length > 0
-    ? data.designMetrics[data.designMetrics.length - 1].detachedComponents
-    : 24;
+  // const deviations = data.designMetrics.length > 0
+  //   ? data.designMetrics[data.designMetrics.length - 1].detachedComponents
+  //   : 24;
 
   // Accesibilidad
   const latestDesign = data.designMetrics.length > 0
@@ -66,7 +64,7 @@ export default function Dashboard({ data }: DashboardProps) {
     nps: npsDefault,
     consistencyScore: governanceScore,
   };
-  const health = calculateHealthScore(healthInputs);
+  // const health = calculateHealthScore(healthInputs); // Usado en HealthScoreCard
 
   // Datos para gráficos - Adoption Trend
   const adoptionTrend = data.designMetrics.slice(-6).map((metric, index) => {
@@ -99,32 +97,32 @@ export default function Dashboard({ data }: DashboardProps) {
     }],
   };
 
-  // 2. Reutilización (stacked bar)
-  const reuseBarData = {
-    labels: [''],
-    datasets: [
-      {
-        label: 'DS',
-        data: [componentReuse],
-        backgroundColor: '#3b82f6',
-      },
-      {
-        label: 'Custom',
-        data: [100 - componentReuse],
-        backgroundColor: '#e5e7eb',
-      },
-    ],
-  };
+  // 2. Reutilización (stacked bar) - No usado actualmente
+  // const reuseBarData = {
+  //   labels: [''],
+  //   datasets: [
+  //     {
+  //       label: 'DS',
+  //       data: [componentReuse],
+  //       backgroundColor: '#3b82f6',
+  //     },
+  //     {
+  //       label: 'Custom',
+  //       data: [100 - componentReuse],
+  //       backgroundColor: '#e5e7eb',
+  //     },
+  //   ],
+  // };
 
-  // 3. Desviaciones (sparkline)
-  const deviationsSparklineData = {
-    labels: adoptionTrend.map(d => d.month),
-    datasets: [{
-      data: data.designMetrics.slice(-6).map(m => m.detachedComponents),
-      borderColor: '#dc2626',
-      backgroundColor: 'transparent',
-    }],
-  };
+  // 3. Desviaciones (sparkline) - No usado actualmente
+  // const deviationsSparklineData = {
+  //   labels: adoptionTrend.map(d => d.month),
+  //   datasets: [{
+  //     data: data.designMetrics.slice(-6).map(m => m.detachedComponents),
+  //     borderColor: '#dc2626',
+  //     backgroundColor: 'transparent',
+  //   }],
+  // };
 
   // 4. Accesibilidad (gauge/donut)
   const accessibilityGaugeData = {

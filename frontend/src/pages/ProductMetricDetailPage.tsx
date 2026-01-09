@@ -1,4 +1,4 @@
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { DashboardData } from '../types';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
@@ -13,7 +13,7 @@ import {
   Legend,
   Filler,
 } from 'chart.js';
-import Tooltip from '../components/Tooltip';
+// import Tooltip from '../components/Tooltip'; // No usado actualmente
 import './PageLayout.css';
 import './ProductMetricDetailPage.css';
 
@@ -183,7 +183,7 @@ export default function ProductMetricDetailPage({ data }: ProductMetricDetailPag
               {config.value}
               {config.unit && <span className="metric-detail-unit">{config.unit}</span>}
             </div>
-            {metricType === 'accessibility' && config.issues !== undefined && (
+            {metricType === 'accessibility' && 'issues' in config && config.issues !== undefined && (
               <div className="metric-detail-issues">
                 {config.issues} {config.issues === 1 ? 'issue crítico' : 'issues críticos'}
               </div>

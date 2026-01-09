@@ -58,7 +58,7 @@ export default function DataSourcesPage() {
     },
   ]);
 
-  const [uploadHistory, setUploadHistory] = useState([
+  const [uploadHistory] = useState([
     {
       id: '1',
       fileName: 'design-metrics-2024-01.csv',

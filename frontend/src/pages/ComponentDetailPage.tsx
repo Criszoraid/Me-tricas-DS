@@ -34,7 +34,7 @@ interface ComponentDetailPageProps {
   data: DashboardData;
 }
 
-export default function ComponentDetailPage({ data }: ComponentDetailPageProps) {
+export default function ComponentDetailPage({}: ComponentDetailPageProps) {
   const params = useParams();
   const componentName = params.componentName || '';
 
