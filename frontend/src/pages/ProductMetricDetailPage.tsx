@@ -58,7 +58,7 @@ export default function ProductMetricDetailPage({ data }: ProductMetricDetailPag
       value: latestDesign?.accessibilityScore ? latestDesign.accessibilityScore.toFixed(0) : '0',
       unit: '%',
       color: latestDesign?.accessibilityScore && latestDesign.accessibilityScore >= 90 ? '#059669' : '#f59e0b',
-      issues: latestDesign?.criticalAccessibilityIssues || 0,
+      issues: latestDesign?.accessibilityIssues || 0,
     },
     consistency: {
       title: 'Consistencia Diseño-Código',
@@ -244,7 +244,7 @@ export default function ProductMetricDetailPage({ data }: ProductMetricDetailPag
                 <div className="metric-detail-info-card">
                   <div className="metric-detail-info-label">Issues Críticos</div>
                   <div className="metric-detail-info-value">
-                    {latestDesign.criticalAccessibilityIssues || 0}
+                    {latestDesign.accessibilityIssues || 0}
                   </div>
                 </div>
                 <div className="metric-detail-info-card">

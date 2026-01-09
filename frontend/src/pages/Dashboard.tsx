@@ -38,7 +38,7 @@ export default function Dashboard({ data }: DashboardProps) {
     ? data.designMetrics[data.designMetrics.length - 1]
     : null;
   const accessibilityScore = latestDesign?.accessibilityScore || 90;
-  const accessibilityIssues = latestDesign?.criticalAccessibilityIssues || 2;
+  const accessibilityIssues = latestDesign?.accessibilityIssues || 2;
 
   // ROI
   const roi = data.roi;

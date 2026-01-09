@@ -90,7 +90,7 @@ export default function DataSourcesPage() {
       // Crear Excel para métricas de diseño
       const workbook = XLSX.utils.book_new();
       const worksheetData = [
-        ['timestamp', 'totalComponents', 'usedComponents', 'detachedComponents', 'adoptionPercentage', 'accessibilityScore', 'criticalAccessibilityIssues'],
+        ['timestamp', 'totalComponents', 'usedComponents', 'detachedComponents', 'adoptionPercentage', 'accessibilityScore', 'accessibilityIssues'],
         ['2024-01-15T00:00:00.000Z', 150, 110, 5, 73.3, 90, 2],
         ['2024-02-15T00:00:00.000Z', 155, 115, 4, 74.2, 91, 1],
         ['', '', '', '', '', '', ''], // Fila vacía para que el usuario pueda agregar más datos
@@ -105,7 +105,7 @@ export default function DataSourcesPage() {
         { wch: 20 }, // detachedComponents
         { wch: 20 }, // adoptionPercentage
         { wch: 20 }, // accessibilityScore
-        { wch: 25 }, // criticalAccessibilityIssues
+        { wch: 25 }, // accessibilityIssues
       ];
       
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Métricas de Diseño');
@@ -142,7 +142,7 @@ export default function DataSourcesPage() {
       name: 'Métricas de Diseño',
       description: 'Plantilla para métricas de Figma (componentes, adopción, desviaciones)',
       type: 'design' as const,
-      fields: ['timestamp', 'totalComponents', 'usedComponents', 'detachedComponents', 'adoptionPercentage', 'accessibilityScore', 'criticalAccessibilityIssues'],
+      fields: ['timestamp', 'totalComponents', 'usedComponents', 'detachedComponents', 'adoptionPercentage', 'accessibilityScore', 'accessibilityIssues'],
     },
     {
       name: 'Métricas de Desarrollo',

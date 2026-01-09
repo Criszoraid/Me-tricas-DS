@@ -71,8 +71,7 @@ export function calculateComponentCostSummary(
  * Aplica benchmarks de complejidad a un componente
  */
 export function applyComplexityBenchmark(
-  component: ComponentCost,
-  rates: ComponentCostRates
+  component: ComponentCost
 ): ComponentCost {
   const benchmark = COMPLEXITY_BENCHMARKS[component.complexity];
   

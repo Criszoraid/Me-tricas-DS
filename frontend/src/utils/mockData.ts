@@ -23,6 +23,7 @@ export function getMockDashboardData(): DashboardData {
         maintenanceRate: 75,
         toolsCost: 5000,
         infrastructureCost: 2000,
+        total: 240000, // Calculado: (80000 * 3 * 1) + (40 * 75 * 12) + 5000 + 2000
       },
       benefits: {
         developmentTimeSaved: 120,
@@ -33,16 +34,15 @@ export function getMockDashboardData(): DashboardData {
         bugsReduced: 45,
         bugFixCost: 200,
         consistencyValue: 15000,
+        total: 592500, // Calculado: (120 + 60) * 75 * 12 + 150 * 50 + 45 * 200 + 15000
       },
       roi: 247,
       status: 'high',
       netValue: 185000,
-      confidenceRange: {
-        low: 180,
-        high: 320,
-      },
+      confidenceLevel: 'estimated',
       confidenceNotes: 'Estimación basada en datos históricos',
       period: 'Q1 2024',
+      lastUpdated: now,
     },
     kpis: [
       {
@@ -51,11 +51,12 @@ export function getMockDashboardData(): DashboardData {
         description: 'Porcentaje de productos usando el Design System',
         currentValue: 73,
         previousValue: 68,
-        targetValue: 80,
-        unit: '%',
         trend: 'up',
+        thresholds: { critical: 50, warning: 70, good: 85, excellent: 95 },
+        status: 'good',
+        sourceMetrics: ['design'],
         calculationMethod: 'adoption',
-        thresholds: { low: 50, medium: 70, high: 85 },
+        lastUpdated: now,
       },
       {
         id: 'kpi-2',
@@ -63,11 +64,12 @@ export function getMockDashboardData(): DashboardData {
         description: 'Reducción en tiempo de desarrollo',
         currentValue: 35,
         previousValue: 32,
-        targetValue: 40,
-        unit: '%',
         trend: 'up',
+        thresholds: { critical: 20, warning: 30, good: 50, excellent: 60 },
+        status: 'warning',
+        sourceMetrics: ['development'],
         calculationMethod: 'efficiency',
-        thresholds: { low: 20, medium: 30, high: 50 },
+        lastUpdated: now,
       },
       {
         id: 'kpi-3',
@@ -75,11 +77,12 @@ export function getMockDashboardData(): DashboardData {
         description: 'Tiempo promedio de resolución de bugs UI',
         currentValue: 2.5,
         previousValue: 3.2,
-        targetValue: 2.0,
-        unit: 'días',
         trend: 'down',
+        thresholds: { critical: 5, warning: 3, good: 1, excellent: 0.5 },
+        status: 'warning',
+        sourceMetrics: ['development'],
         calculationMethod: 'issue-resolution',
-        thresholds: { low: 5, medium: 3, high: 1 },
+        lastUpdated: now,
       },
     ],
     okrs: [
@@ -88,6 +91,7 @@ export function getMockDashboardData(): DashboardData {
         title: 'Aumentar Adopción del Design System',
         description: 'Mejorar la adopción en todos los productos',
         quarter: 'Q1 2024',
+        status: 'on-track',
         keyResults: [
           {
             id: 'kr-1-1',
@@ -96,6 +100,7 @@ export function getMockDashboardData(): DashboardData {
             targetValue: 80,
             currentValue: 73,
             unit: '%',
+            progress: 91.25, // (73/80) * 100
           },
           {
             id: 'kr-1-2',
@@ -104,6 +109,7 @@ export function getMockDashboardData(): DashboardData {
             targetValue: 15,
             currentValue: 24,
             unit: 'componentes',
+            progress: 62.5, // Invertido: (15/24) * 100, pero como es "reducir", mejor usar (15/24)
           },
         ],
         progress: 0.65,
@@ -121,7 +127,7 @@ export function getMockDashboardData(): DashboardData {
         detachedComponents: Math.floor((5 - progress * 2) + Math.random() * 2),
         adoptionPercentage: Math.round(((65 + progress * 20) + Math.random() * 5) * 10) / 10,
         accessibilityScore: Math.round((85 + progress * 5 + Math.random() * 5) * 10) / 10,
-        criticalAccessibilityIssues: Math.floor((3 - progress * 2) + Math.random() * 2),
+        accessibilityIssues: Math.floor((3 - progress * 2) + Math.random() * 2),
         figmaFileKey: 'sample-file-key',
       };
     }),
